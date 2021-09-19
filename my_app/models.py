@@ -1,16 +1,16 @@
 from django.db import models
+from django.conf import settings
+from django.contrib.auth.models import User
+
 
 # Create your models here.
 class Person(models.Model):
-	name = models.CharField(max_length = 50)
+	user = models.OneToOneField(settings.AUTH_USER_MODEL,on_delete = models.CASCADE)
+	role = models.CharField(max_length = 50, default = "viewer")
 
 class Phone_no(models.Model):
 	person = models.ForeignKey(Person, on_delete = models.CASCADE)
 	phone_no = models.IntegerField()
-
-class Email(models.Model):
-	person = models.ForeignKey(Person, on_delete = models.CASCADE)
-	email = models.EmailField()
 
 class Complaints(models.Model):
 	person = models.ForeignKey(Person, on_delete = models.CASCADE)
@@ -37,7 +37,7 @@ class Survey_metadata(models.Model):    # all surveys will be displayed in a tab
 class Survey_data(models.Model):  
 	surveyor = models.ForeignKey(Person, on_delete = models.CASCADE) 
 	person = models.CharField(max_length = 50)
-	servey_id = models.ForeignKey(Survey_metadata, on_delete = models.CASCADE)
+	survey_id = models.ForeignKey(Survey_metadata, on_delete = models.CASCADE)
 	feedback = models.TextField()
 	status = models.CharField(max_length = 20)   # the problem (if any addressed or not)
 	last_date = models.DateField(auto_now = True) #

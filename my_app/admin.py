@@ -4,7 +4,6 @@ from . models import *
 
 admin.site.register(Person)
 admin.site.register(Phone_no)
-admin.site.register(Email)
 admin.site.register(Complaints)
 admin.site.register(Emission_parameters)
 admin.site.register(Survey_metadata)
