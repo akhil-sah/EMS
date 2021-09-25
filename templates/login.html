@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content_2 %}
+	<div class='loginBlock'>
+		<header>
+			<h1 class='title'>EMS</h1>
+			<blockquote class='tagline'>Environment Management System</blockquote>
+		</header>
+		 
+		<div class='login'>
+			<form action="{% url 'login' %}" method='POST'>
+				{% csrf_token %}
+				<ul>
+					<li><label>Email: </label>{{form.username}}</li>   <!--form yaha kaha se import?-->
+					<li><label>Password: </label>{{form.password}}</li> 
+					<li>
+						<a href="{% url 'password_reset' %}" class='forgotPassword'>Forgot Password?</a>
+						<input type='submit' value='LogIn' class='submitButton'>
+					</li>
+				</ul>
+			</form>			
+		</div>
+		<div class='signUp'>
+			<p>Dont have an account? <a href="{% url 'register' %}">Sign Up</a></p>
+		</div>
+	</div>
+{% endblock %}

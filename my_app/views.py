@@ -53,7 +53,7 @@ def register_view(request):
 			#Save the user object
 			new_user.save()
 			person = Person.objects.create(user = new_user)
-			pserson.save()
+			person.save()
 			return render(request,'registered.html',{'new_user':new_user})
 	else:
 		user_form = user_registration_form()

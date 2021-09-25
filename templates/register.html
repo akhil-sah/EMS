@@ -1,2 +1,39 @@
 {% extends 'base.html' %}
-<h1>Sign up</h1>
+{% load static %}
+{% block add_files %}
+<link href="{% static 'css/register.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content_2 %}
+	<div class='userRegistration'>
+		<div class='header'>
+			<h1>Create an account</h1>
+		</div>
+
+		<div class='registrationForm'>
+			<p>Please, sign up using the following form:</p>
+			<form action="{% url 'register' %}" method='POST' id="signUpForm">
+				{% csrf_token %}
+				<ul>
+					<li>
+						<li id='username'><label>Username </label>{{user_form.username}}<li>
+						<ul class='usernameGuidelines'>
+							<li><p>150 characters or fewer. Letters,digits,and '_' only.</p></li>
+						</ul>
+					</li>
+					<li id='usernameErrorMessage' class='error'></li>
+					<li id='firstName'><label>First Name</label>{{user_form.first_name}}</li>
+					<li id='firstNameErrorMessage' class='error'></li>
+					<li id='email'><label>Email </label>{{user_form.email}}</li>
+					<li id='emailErrorMessage' class='error'></li>
+					<li id='password'><label>Password </label>{{user_form.password}}</li>
+					<li id='passwordErrorMessage' class='error'></li>
+					<li id='password2'><label>Confirm Password </label>{{user_form.password2}}</li>
+					<li id='password2ErrorMessage' class='error'></li>
+					<li><input type='submit' value='Create Account' id='submitButton' class='submitButton'></li>
+				</ul>
+			</form>
+			<script src = "{% static 'js/register.js' %}"></script>  
+		</div>
+	</div>
+{% endblock %}
