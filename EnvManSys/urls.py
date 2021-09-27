@@ -23,16 +23,15 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('admin/', admin.site.urls),
 #    path('my_app/',include('my_app.urls')),
-    path('', views.home_view, name = 'home'),
-    path('', views.home_view, name = 'home'),
+    path('', views.index_view, name = 'index'),
 #    path('survey_data/<int:survey_id>/',views.survey_data_view, name = 'survey_data'),
-    path('', views.home_view, name = 'home'),
-    path('', views.home_view, name = 'home'),   
 
     path('password_reset/',auth_views.PasswordResetView.as_view(),name = 'password_reset'),
     path('login/', views.login_view, name = 'login'),
     path('register/', views.register_view, name = 'register'),
     path('edit/',views.edit_view, name = 'edit'),
+    path('logout/',auth_views.LogoutView.as_view(),name = 'logout'),
+    path('home/', views.home_view, name = 'home'),
 
 #    path('logout/',auth_views.LogoutView.as_view(),name = 'logout'),
 #    path('profile/',views.profile_view, name='profile'),

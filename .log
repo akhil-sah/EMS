@@ -1,3 +1,6 @@
 make html file names general.
 In html file use if else for role and based on role show different content
 When username already present no message is being shown
+
+
+Audit (navbar): will redirect to a page havinf 3 options, audit emissions, audit complaints, audit surveys

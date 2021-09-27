@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 
 
 # Create your views here.
-def home_view(request, *args, **kwargs):
+def index_view(request, *args, **kwargs):
 	print(request)
 #	obj = Person.objects.get(condition)
 #	return HttpResponse("<h1>Hello World</h>")
@@ -28,7 +28,9 @@ def login_view(request):
 			if user is not None:
 				if user.is_active:
 					login(request,user)
-					return render(request,'index.html',{'user':user})
+					person = Person.objects.get(user = user)
+					print(person.role)
+					return render(request,'home.html',{'user':user, 'person':person})
 
 				else:
 					return HttpResponse("Disabled Account")
@@ -75,6 +77,16 @@ def edit_view(request):
 		user_form = user_edit_form(instance = request.user)
 
 	return render(request,'profile.html', {'user_form':user_form}) #on page where info is visible make it updateable
+
+@login_required
+def home_view(request):
+	user = request.user
+	person = Person.objects.get(user = user)
+	print(person.role)
+	return render(request,'home.html',{'user':user,'person':person})      #->Work this out.
+
+
+
 """
 @login_required
 def survey_data_view(request):
