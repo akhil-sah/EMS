@@ -11,7 +11,7 @@
 
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-		<link = rel="stylesheet" href="{% static 'css/base.css' %}">
+		<link rel="stylesheet" href="{% static 'css/base.css' %}">
 		
 		{% block add_files %}
 		{% endblock %}
@@ -26,12 +26,12 @@
 	            </button>
 	            <a class="navbar-brand mr-auto" href="#">EMS</a>
 	            <div class = "collapse navbar-collapse" id = "Navbar">
-	                <ul class = "navbar-nav mr-auto">
+	                <ul class = "navbar-nav ml-auto">
 	                    <li class="nav-item active">
-	                    	<a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+	                    	<a class="nav-link" href="/">Home</a>
 	                    </li>
 	                    <li class="nav-item">
-	                    	<a class="nav-link" href="/permissible_emissions">MPE<span class="sr-only">(current)</span></a>
+	                    	<a class="nav-link" href="/permissible_emissions">MPE</a>
 	                    </li>
 	                    <li class="nav-item">
 	                    	<a class="nav-link" href="#">Articles</a>
@@ -50,10 +50,12 @@
 		      		</div>
 		    <div class ="container">
 		    	<div class = "row row-content">
-		      		
+		      		<h1>hola</h1>
 		  		</div>
 		    </div>
         </div>	
+		{% endblock %}
+		{% block content_3 %}
 		{% endblock %}
 		<!-- Footer -->
 		<footer class = "footer">
