@@ -148,10 +148,10 @@
 		            <div class = "collapse navbar-collapse" id = "Navbar">
 		                <ul class = "navbar-nav ml-auto">
 		                    <li class="nav-item active">
-		                    	<a class="nav-link active" href="/home">Home</span></a>
+		                    	<a class="nav-link" href="/home">Home</span></a>
 		                    </li>
 		                    <li class="nav-item">
-		                    	<a class="nav-link" href="/permissible_emissions"></a>
+		                    	<a class="nav-link" href="/permissible_emissions">MPE</a>
 		                    </li>
 		                    {% if person.role == "Auditor" %}
 			                    <li class="nav-item">
@@ -177,7 +177,7 @@
 				        		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">My Profile
 							        <span class="caret"></span></a>
 						        <ul class="dropdown-menu" style = "background-color: #31b760;">
-						          <li class = "nav-item" ><a class = "nav-link" href="profile.html">My Profile</a></li>
+						          <li class = "nav-item" ><a class = "nav-link" href="/profile">My Profile</a></li>
 						          <li class = "nav-item"><a class = "nav-link" href="{% url 'logout' %}">Logout</a></li>
 						        </ul>
 				      		</li>

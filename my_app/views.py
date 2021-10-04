@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 
 # Create your views here.
 def index_view(request, *args, **kwargs):
-	print(request)
+#	print(request)
 #	obj = Person.objects.get(condition)
 #	return HttpResponse("<h1>Hello World</h>")
 	return render(request, "index.html", {})
@@ -82,10 +82,20 @@ def edit_view(request):
 def home_view(request):
 	user = request.user
 	person = Person.objects.get(user = user)
-	print(person.role)
+#	print(person.role)
 	return render(request,'home.html',{'user':user,'person':person})      #->Work this out.
 
 
+def permissible_emissions_view(request):
+	print(request.user)
+	emissions = Emission_parameters.objects.all()
+	return render(request, 'permissible_emissions.html', {'emissions':emissions})
+
+@login_required
+def profile_view(request):
+	user = request.user
+	person = Person.objects.get(user = user)
+	return render(request, 'profile.html', {'user':user, 'person': person})
 
 """
 @login_required

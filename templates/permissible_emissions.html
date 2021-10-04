@@ -1,3 +1,118 @@
-{% extends 'base.html'}
+{% extends 'base.html' %}
 
-{}
+{% block content %}
+{% if request.user.is_authenticated %}
+		<nav class = "navbar navbar-dark navbar-expand-sm">
+	        <div class = "container">
+	            <button class = "navbar-toggler" type = "button" data-toggle = "collapse" data-target = "#Navbar">
+	                <span class = "navbar-toggler-icon"></span>
+	            </button>
+	            <a class="navbar-brand mr-auto" href="/home">EMS</a>
+	            <div class = "collapse navbar-collapse" id = "Navbar">
+	                <ul class = "navbar-nav ml-auto">
+	                    <li class="nav-item">
+	                    	<a class="nav-link" href="/home">Home</span></a>
+	                    </li>
+	                    <li class="nav-item active">
+	                    	<a class="nav-link" href="#">MPE</a>
+	                    </li>
+	                    {% if person.role == "Auditor" %}
+		                    <li class="nav-item">
+				        		<a class="nav-link" href="#">Audit</a>
+				      		</li>
+				      	{% elif person.role == "Supervisor" %}
+		                    <li class="nav-item">
+				        		<a class="nav-link" href="#">Emission Data</a>
+				      		</li>			
+				      	{% elif person.role == "Surveyor" %}
+				      		<li class="nav-item">
+			        			<a class="nav-link" href="#">Survey Data</a>
+			      			</li>
+			      		{% else %}			      	
+				      	    <li class="nav-item">
+				        		<a class="nav-link" href="#">Complaints</a>
+				      		</li>
+				      	    <li class="nav-item">
+				        		<a class="nav-link" href="#">Survey Data</a>
+				      		</li>
+				      	{% endif %}
+			      		<li class="nav-item dropdown">
+			        		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">My Profile
+						        <span class="caret"></span></a>
+					        <ul class="dropdown-menu" style = "background-color: #31b760;">
+					          <li class = "nav-item" ><a class = "nav-link" href="/profile">My Profile</a></li>
+					          <li class = "nav-item"><a class = "nav-link" href="{% url 'logout' %}">Logout</a></li>
+					        </ul>
+			      		</li>
+	                </ul>    
+	            </div> 
+	        </div>
+    	</nav>	
+{% else %}
+		<nav class = "navbar navbar-dark navbar-expand-sm">
+	        <div class = "container">
+	            <button class = "navbar-toggler" type = "button" data-toggle = "collapse" data-target = "#Navbar">
+	                <span class = "navbar-toggler-icon"></span>
+	            </button>
+	            <a class="navbar-brand mr-auto" href="/">EMS</a>
+	            <div class = "collapse navbar-collapse" id = "Navbar">
+	                <ul class = "navbar-nav ml-auto">
+	                    <li class="nav-item">
+	                    	<a class="nav-link" href="/">Home</a>
+	                    </li>
+	                    <li class="nav-item active">
+	                    	<a class="nav-link" href="/permissible_emissions">MPE</a>
+	                    </li>
+	                    <li class="nav-item">
+	                    	<a class="nav-link" href="#">Articles</a>
+	                    </li>
+	                    <li class="nav-item">
+	                    	<a class = "nav-link" href="{% url 'login' %}">Login</a>
+	                    </li>
+	                </ul>    
+	            </div> 
+	        </div>
+    	</nav>
+{% endif %}
+{% endblock %}
+
+{% block content_2 %}
+    <div class ="container">
+    	<div class = "row row-content">
+      		<h1>Maximum Permissible Limits</h1>
+      		<div class = "col-12 col-sm-12">
+  				<p>About permissible limits and all</p>
+  			</div>
+  		</div>
+  		<div class ="row row-content">
+  			<div class = "col-12 col-sm-9">
+               <h2>Permissible &amp; Emission &amp; limits</h2>
+               <div class = "table-responsive">
+                   <table class = "table table-striped">
+                       <thead class = "thead-dark">
+                           <tr>
+                               <th>Substance name</th>
+                               <th>Substance type</th>
+                               <th>Min limit</th>
+                               <th>Max limit</th>
+                               <th>Unit</th>
+                           </tr>
+                       </thead>
+                       <tbody>
+                       	{% for emission in emissions %}
+                           <tr>
+                               <th>emission.substance_name</th>
+                               <td>emission.substance_type</td>
+                               <td>emission.min_permissible_limit</td>
+                               <td>emission.max_permissible_limit</td>
+                               <td>emission.unit</td>
+                           </tr>
+						{% endfor %}
+                       </tbody>
+                   </table>
+               </div>
+           </div>
+  		</div>
+    </div>
+</div>	
+{% endblock %}

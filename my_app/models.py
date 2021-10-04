@@ -22,10 +22,10 @@ class Complaints(models.Model):
 class Emission_parameters(models.Model):
 	substance_name = models.CharField(max_length = 50)
 	substance_type = models.CharField(max_length = 50)
-	permissible_limit = models.IntegerField()
+	min_permissible_limit = models.IntegerField()
+	max_permissible_limit = models.IntegerField()
 	unit = models.CharField(max_length = 20)
-	relation = models.CharField(default = "max", max_length = 10)   #maximum\minimum permissible limit
-
+	
 class Survey_metadata(models.Model):    # all surveys will be displayed in a table and to see details of survey we will click on link (like trip_planner)
 	auditor = models.ForeignKey(Person, on_delete = models.CASCADE)
 	date = models.DateField()

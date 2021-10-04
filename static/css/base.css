@@ -10,6 +10,10 @@
     min-height: 400px;
 }
 
+.text-center{
+    text-align: center!important;
+}
+
 .footer{
     background-color: #45eb7f;
     margin: 0px auto;
@@ -26,10 +30,10 @@ body, html {
 
 .bg {
     /* The image used */
-    background-image: url(../images/leaf.jpg);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(../images/leaf.jpg);
 
     /* Full height */
-    height: 100%;
+    height: 100vh;
     /* Center and scale the image nicely */
     background-position: center;
     background-repeat: no-repeat;
