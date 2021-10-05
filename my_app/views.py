@@ -97,6 +97,41 @@ def profile_view(request):
 	person = Person.objects.get(user = user)
 	return render(request, 'profile.html', {'user':user, 'person': person})
 
+@login_required
+def lodge_complaint_view(request):
+	if request.method == 'POST':
+		user_form = lodge_complaint_form(instance = request.user, data = request.POST)
+		
+		if user_form.is_valid(): 
+			user = request.user
+			person = Person.objects.get(user = user)
+			
+			cd = user_form.cleaned_data
+			complaint = cd['complaint']
+			rules_violated = cd['rules_violated']
+
+			obj = Complaints(person = person, complaint = complaint, rules_violated = rules_violated)
+			obj.save()
+			return render(request,'complaint_lodged.html',{'user':user, 'complaint':obj})
+
+	else:
+		user_form = user_edit_form(instance = request.user)
+
+	return render(request,'lodge_complaint.html', {'user_form':user_form}) 
+
+@login_required
+def track_complaint_view(request):
+	user = request.user
+	person = Person.objects.get(user = user)
+	complaints = Complaints.objects.filter(person = person).order_by('last_update')
+	return render(request,'track_complaint.html',{'complaints':complaints})
+
+@login_required
+def track_complaint2_view(request, complaint_id):
+	complaint = get_object_or_404(Complaints, pk = complaint_id)
+	return render(request,'track_complaint.html',{'complaint':complaint})
+
+
 """
 @login_required
 def survey_data_view(request):

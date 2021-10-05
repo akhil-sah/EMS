@@ -29,12 +29,23 @@
 			        			<a class="nav-link" href="#">Survey Data</a>
 			      			</li>
 			      		{% else %}			      	
-				      	    <li class="nav-item">
-				        		<a class="nav-link" href="#">Complaints</a>
-				      		</li>
+		                    <li class="nav-item">
+		                    	<a class="nav-link" href="#">Articles</a>
+		                    </li>
+		                    <li class="nav-item">
+		                    	<a class="nav-link" href="/home">About</a>
+		                    </li>
 				      	    <li class="nav-item">
 				        		<a class="nav-link" href="#">Survey Data</a>
 				      		</li>
+			      			<li class="nav-item dropdown">
+				        		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Complaints
+							        <span class="caret"></span></a>
+						        <ul class="dropdown-menu" style = "background-color: #31b760;">
+						          <li class = "nav-item" ><a class = "nav-link" href="/lodge_complaint">Lodge Complaint</a></li>
+						          <li class = "nav-item"><a class = "nav-link" href="/track_complaint">Track Complaint</a></li>
+						        </ul>
+			      			</li>
 				      	{% endif %}
 			      		<li class="nav-item dropdown">
 			        		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">My Profile
@@ -67,6 +78,9 @@
 	                    	<a class="nav-link" href="#">Articles</a>
 	                    </li>
 	                    <li class="nav-item">
+	                    	<a class="nav-link" href="/home">About</a>
+	                    </li>
+	                    <li class="nav-item">
 	                    	<a class = "nav-link" href="{% url 'login' %}">Login</a>
 	                    </li>
 	                </ul>    
@@ -86,7 +100,7 @@
   		</div>
   		<div class ="row row-content">
   			<div class = "col-12 col-sm-9">
-               <h2>Permissible &amp; Emission &amp; limits</h2>
+               <h2>Permissible Emission limits</h2>
                <div class = "table-responsive">
                    <table class = "table table-striped">
                        <thead class = "thead-dark">
@@ -101,11 +115,11 @@
                        <tbody>
                        	{% for emission in emissions %}
                            <tr>
-                               <th>emission.substance_name</th>
-                               <td>emission.substance_type</td>
-                               <td>emission.min_permissible_limit</td>
-                               <td>emission.max_permissible_limit</td>
-                               <td>emission.unit</td>
+                               <th>{{emission.substance_name}}</th>
+                               <td>{{emission.substance_type}}</td>
+                               <td>{{emission.min_permissible_limit}}</td>
+                               <td>{{emission.max_permissible_limit}}</td>
+                               <td>{{emission.unit}}</td>
                            </tr>
 						{% endfor %}
                        </tbody>

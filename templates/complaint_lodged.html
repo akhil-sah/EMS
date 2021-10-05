@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block add_files %}
-<link rel = "stylesheet" href= "{% static 'css/profile.css' %}">
+<link rel = "stylesheet" href= "{% static 'css/complaints.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -21,19 +21,6 @@
                     <li class="nav-item">
                     	<a class="nav-link" href="/permissible_emissions">MPE</a>
                     </li>
-                    {% if person.role == "Auditor" %}
-	                    <li class="nav-item">
-			        		<a class="nav-link" href="#">Audit</a>
-			      		</li>
-			      	{% elif person.role == "Supervisor" %}
-	                    <li class="nav-item">
-			        		<a class="nav-link" href="#">Emission Data</a>
-			      		</li>			
-			      	{% elif person.role == "Surveyor" %}
-			      		<li class="nav-item">
-		        			<a class="nav-link" href="#">Survey Data</a>
-		      			</li>
-		      		{% else %}			      	
                     <li class="nav-item">
                     	<a class="nav-link" href="#">Articles</a>
                     </li>
@@ -43,7 +30,7 @@
 		      	    <li class="nav-item">
 		        		<a class="nav-link" href="#">Survey Data</a>
 		      		</li> 
-	      			<li class="nav-item dropdown">
+	      			<li class="nav-item dropdown active">
 		        		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Complaints
 					        <span class="caret"></span></a>
 				        <ul class="dropdown-menu" style = "background-color: #31b760;">
@@ -51,9 +38,8 @@
 				          <li class = "nav-item"><a class = "nav-link" href="/track_complaint">Track Complaint</a></li>
 				        </ul>
 	      			</li>
-			      	{% endif %}
 		      		<li class="nav-item dropdown">
-		        		<a class="nav-link dropdown-toggle active" data-toggle="dropdown" href="#">My Profile
+		        		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">My Profile
 					        <span class="caret"></span></a>
 				        <ul class="dropdown-menu" style = "background-color: #31b760;">
 				          <li class = "nav-item" ><a class = "nav-link" href="/profile">My Profile</a></li>
@@ -64,4 +50,20 @@
             </div> 
         </div>
 	</nav>	
+{% endblock %}
+
+{% block content_2 %}
+<div class = "container" style="height: 100vh;">
+	<div class="row row-content">
+       <div class="col-12">
+          <h2>Complaint Lodged Successfully</h2>
+       </div>
+        <div class="col-12 col-md-9">
+            <p>The complaint id for your complaint is {{complaint.id}}</p>
+            <p>Use this id to track your complaint status</p> 
+        </div>
+         <div class="col-12 col-md">
+        </div>
+   </div>
+</div>
 {% endblock %}

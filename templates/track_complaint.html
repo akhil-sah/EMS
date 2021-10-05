@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block add_files %}
-<link rel = "stylesheet" href= "{% static 'css/profile.css' %}">
+<link rel = "stylesheet" href= "{% static 'css/complaints.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -21,19 +21,6 @@
                     <li class="nav-item">
                     	<a class="nav-link" href="/permissible_emissions">MPE</a>
                     </li>
-                    {% if person.role == "Auditor" %}
-	                    <li class="nav-item">
-			        		<a class="nav-link" href="#">Audit</a>
-			      		</li>
-			      	{% elif person.role == "Supervisor" %}
-	                    <li class="nav-item">
-			        		<a class="nav-link" href="#">Emission Data</a>
-			      		</li>			
-			      	{% elif person.role == "Surveyor" %}
-			      		<li class="nav-item">
-		        			<a class="nav-link" href="#">Survey Data</a>
-		      			</li>
-		      		{% else %}			      	
                     <li class="nav-item">
                     	<a class="nav-link" href="#">Articles</a>
                     </li>
@@ -43,7 +30,7 @@
 		      	    <li class="nav-item">
 		        		<a class="nav-link" href="#">Survey Data</a>
 		      		</li> 
-	      			<li class="nav-item dropdown">
+	      			<li class="nav-item dropdown active">
 		        		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Complaints
 					        <span class="caret"></span></a>
 				        <ul class="dropdown-menu" style = "background-color: #31b760;">
@@ -51,9 +38,8 @@
 				          <li class = "nav-item"><a class = "nav-link" href="/track_complaint">Track Complaint</a></li>
 				        </ul>
 	      			</li>
-			      	{% endif %}
 		      		<li class="nav-item dropdown">
-		        		<a class="nav-link dropdown-toggle active" data-toggle="dropdown" href="#">My Profile
+		        		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">My Profile
 					        <span class="caret"></span></a>
 				        <ul class="dropdown-menu" style = "background-color: #31b760;">
 				          <li class = "nav-item" ><a class = "nav-link" href="/profile">My Profile</a></li>
@@ -63,5 +49,50 @@
                 </ul>    
             </div> 
         </div>
-	</nav>	
+	</nav>
+{% endblock %}
+
+{% block content_2 %}
+<div class = "container" style = "min-height: 100vh;">
+	<div class="row row-content">
+        <div class="col-12">
+          <h2>Your Complaints</h2>
+        </div>
+        {% if complaints is None %}
+        	<div class="col-12 col-md-9">
+        		<p>We couldn't find any complaints lodged by you</p>
+        	</div>
+        {% else %}       
+		    <div class="col-12 col-md-9">
+	    		<div class = "table-responsive">
+                    <table class = "table table-striped">
+                       <thead class = "thead-dark">
+                           <tr>
+                               <th>Complaint Id</th>
+                               <th>Complaint Description</th>
+                               <th>Rules Violated</th>
+                               <th>Status</th>
+                               <th>Last updated</th>
+                           </tr>
+                       </thead>
+                       <tbody>
+							{% for complaint in complaints %}                           
+							<tr>
+                               <td>{{complaint.id}}</td>
+                               <td>{{complaint.complaint}}</td>
+                               <td>{{complaint.rules_violated}}</td>
+                               <td>{{complaint.status}}</td>
+                               <td>{{complaint.last_update}}</td>
+                           </tr>
+						{% endfor %}
+                       </tbody>
+                    </table>
+                </div>
+	        </div>
+	    {% endif %}
+        <div class="col-12 col-md">
+        </div>
+   </div>
+</div>
+
 {% endblock %}

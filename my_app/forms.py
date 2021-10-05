@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Person
+from .models import Person, Complaints
 
 class login_form(forms.Form):
 	username = forms.CharField()               #EmailField()
@@ -25,3 +25,11 @@ class user_edit_form(forms.ModelForm):
 	class Meta:
 		model = User
 		fields = ('first_name', 'last_name', 'email')
+
+class lodge_complaint_form(forms.ModelForm):
+	class Meta:
+		model = Complaints
+		fields = ('id','complaint', 'rules_violated')
+
+class track_complaint_form(forms.Form):
+	complaint_id = forms.IntegerField()

@@ -21,23 +21,25 @@ from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-#    path('my_app/',include('my_app.urls')),
-    path('', views.index_view, name = 'index'),
 #    path('survey_data/<int:survey_id>/',views.survey_data_view, name = 'survey_data'),
+#    path('my_app/',include('my_app.urls')),
 
-
-    #AuthenticationUrl's
-    #path('',include('django.contrib.auth.urls')),
-    path('login/', views.login_view, name = 'login'),
-    path('register/', views.register_view, name = 'register'),
-    path('edit/',views.edit_view, name = 'edit'),
-    path('logout/',auth_views.LogoutView.as_view(),name = 'logout'),
-    path('home/', views.home_view, name = 'home'),
-    path('password_change/',auth_views.PasswordChangeView.as_view(),name='password_change'),
-    path('password_change/done/',auth_views.PasswordChangeDoneView.as_view(),name = 'password_change_done'),
+    path('admin/', admin.site.urls),
+    path('', views.index_view, name = 'index'),
     path('permissible_emissions/', views.permissible_emissions_view, name = 'permissible_emissions'),
     path('profile/',views.profile_view, name = 'profile'),
+    path('edit/',views.edit_view, name = 'edit'),
+    path('home/', views.home_view, name = 'home'),
+    path('lodge_complaint/', views.lodge_complaint_view, name = 'lodge_complaint'),
+    path('track_complaint/', views.track_complaint_view, name = 'track_complaint'),    
+    path('track_complaint/<int:complaint_id>', views.track_complaint2_view, name = 'track_complaint2'),    
+
+    #AuthenticationUrl's
+    path('login/', views.login_view, name = 'login'),
+    path('register/', views.register_view, name = 'register'),
+    path('logout/',auth_views.LogoutView.as_view(),name = 'logout'),
+    path('password_change/',auth_views.PasswordChangeView.as_view(),name='password_change'),
+    path('password_change/done/',auth_views.PasswordChangeDoneView.as_view(),name = 'password_change_done'),
 
 
     #PasswordReset
