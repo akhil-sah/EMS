@@ -66,7 +66,7 @@ def register_view(request):
 def edit_view(request):
 	if request.method == 'POST':
 		user_form = user_edit_form(instance = request.user,data = request.POST)
-		
+
 		if user_form.is_valid():
 			user_form.save()
 
@@ -101,11 +101,11 @@ def profile_view(request):
 def lodge_complaint_view(request):
 	if request.method == 'POST':
 		user_form = lodge_complaint_form(instance = request.user, data = request.POST)
-		
-		if user_form.is_valid(): 
+
+		if user_form.is_valid():
 			user = request.user
 			person = Person.objects.get(user = user)
-			
+
 			cd = user_form.cleaned_data
 			complaint = cd['complaint']
 			rules_violated = cd['rules_violated']
@@ -117,7 +117,31 @@ def lodge_complaint_view(request):
 	else:
 		user_form = user_edit_form(instance = request.user)
 
-	return render(request,'lodge_complaint.html', {'user_form':user_form}) 
+	return render(request,'lodge_complaint.html', {'user_form':user_form})
+
+@login_required
+def enter_emissions(request):
+	if request.method == 'POST':
+# TODO: Create the enter_emissions form
+		user_form = enter_emissions_form(instance = request.user, data = request.POST)
+
+		if user_form.is_valid():
+			user = request.user
+			person = Person.objects.get(user = user)
+# TODO: Fetch the data from the form and do appropriate actions
+			cd = user_form.cleaned_data
+			complaint = cd['complaint']
+			rules_violated = cd['rules_violated']
+# TODO: Save the fetched data into database.
+			obj = Complaints(person = person, complaint = complaint, rules_violated = rules_violated)
+			obj.save()
+			return render(request,'emissions.html',{'user':user, 'complaint':obj})
+
+	else:
+		user_form = user_edit_form(instance = request.user)
+
+	return render(request,'emissions.html', {'user_form':user_form})
+
 
 @login_required
 def track_complaint_view(request):
