@@ -1,0 +1,46 @@
+.row-header {
+    margin:0px auto;
+    padding: 0px auto;
+}
+
+.row-content{
+    margin: 0px auto;
+    padding: 50px 0px 50px 0px;
+/*    border-bottom: 1px ridge;*/
+    min-height: 400px;
+}
+
+.text-center{
+    text-align: center!important;
+}
+
+.footer{
+    background-color: #45eb7f;
+    margin: 0px auto;
+    padding: 20px 0px 20px 0px;
+}
+
+.navbar-dark{
+    background-color: #31b760;
+}
+
+body, html {
+  height: 100%;
+}
+
+.bg {
+    /* The image used */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(../images/leaf.jpg);
+
+    /* Full height */
+    height: 100vh;
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-color: #fff;
+}

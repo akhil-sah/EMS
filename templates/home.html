@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	{% if user.is_authenticated %}
+<!--		{% if person.role == "Auditor" %}
+			<nav class = "navbar navbar-dark navbar-expand-sm">
+		        <div class = "container">
+		            <button class = "navbar-toggler" type = "button" data-toggle = "collapse" data-target = "#Navbar">
+		                <span class = "navbar-toggler-icon"></span>
+		            </button>
+		            <a class="navbar-brand mr-auto" href="#">EMS</a>
+		            <div class = "collapse navbar-collapse" id = "Navbar">
+		                <ul class = "navbar-nav mr-auto">
+		                    <li class="nav-item active">
+		                    	<a class="nav-link active" href="/">Home</span></a>
+		                    </li>
+		                    <li class="nav-item">
+		                    	<a class="nav-link" href="/permissible_emissions"></a>
+		                    </li>
+		                    <li class="nav-item">
+		                    	<a class="nav-link" href="#">Articles</a>
+		                    </li>
+				      	    <li class="nav-item">
+				        		<a class="nav-link" href="#">Audit</a>
+				      		</li>		                    
+				      		<li class="nav-item dropdown">
+				        		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">My Profile
+							        <span class="caret"></span></a>
+						        <ul class="dropdown-menu">
+						          <li class = "nav-item"><a class = "nav-link" href="profile.html">My Profile</a></li>
+						          <li class = "nav-item"><a class = "nav-link" href="{% url 'logout' %}">Logout</a></li>
+						        </ul>
+				      		</li>
+		                </ul>    
+		            </div> 
+		        </div>
+	    	</nav>
+			 
+		{% elif person.role == "Supervisor" %}
+			<nav class = "navbar navbar-dark navbar-expand-sm">
+		        <div class = "container">
+		            <button class = "navbar-toggler" type = "button" data-toggle = "collapse" data-target = "#Navbar">
+		                <span class = "navbar-toggler-icon"></span>
+		            </button>
+		            <a class="navbar-brand mr-auto" href="#">EMS</a>
+		            <div class = "collapse navbar-collapse" id = "Navbar">
+		                <ul class = "navbar-nav mr-auto">
+		                    <li class="nav-item active">
+		                    	<a class="nav-link active" href="/">Home</span></a>
+		                    </li>
+		                    <li class="nav-item">
+		                    	<a class="nav-link" href="/permissible_emissions"></a>
+		                    </li>
+		                    <li class="nav-item">
+		                    	<a class="nav-link" href="#">Articles</a>
+		                    </li>
+				      	    <li class="nav-item">
+				        		<a class="nav-link" href="#">Emission data</a>
+				      		</li>
+				      		<li class="nav-item dropdown">
+				        		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">My Profile
+							        <span class="caret"></span></a>
+						        <ul class="dropdown-menu">
+						          <li class = "nav-item"><a class = "nav-link" href="profile.html">My Profile</a></li>
+						          <li class = "nav-item"><a class = "nav-link" href="{% url 'logout' %}">Logout</a></li>
+						        </ul>
+				      		</li>
+		                </ul>    
+		            </div> 
+		        </div>
+	    	</nav>
+
+		{% elif person.role == "Surveyor" %}
+			<nav class = "navbar navbar-dark navbar-expand-sm">
+		        <div class = "container">
+		            <button class = "navbar-toggler" type = "button" data-toggle = "collapse" data-target = "#Navbar">
+		                <span class = "navbar-toggler-icon"></span>
+		            </button>
+		            <a class="navbar-brand mr-auto" href="#">EMS</a>
+		            <div class = "collapse navbar-collapse" id = "Navbar">
+		                <ul class = "navbar-nav mr-auto">
+		                    <li class="nav-item active">
+		                    	<a class="nav-link active" href="/">Home</span></a>
+		                    </li>
+		                    <li class="nav-item">
+		                    	<a class="nav-link" href="/permissible_emissions"></a>
+		                    </li>
+		                    <li class="nav-item">
+		                    	<a class="nav-link" href="#">Articles</a>
+		                    </li>
+				      	    <li class="nav-item">
+				        		<a class="nav-link" href="#">Survey Data</a>
+				      		</li>
+				      		<li class="nav-item dropdown">
+				        		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">My Profile
+							        <span class="caret"></span></a>
+						        <ul class="dropdown-menu">
+						          <li class = "nav-item"><a class = "nav-link" href="profile.html">My Profile</a></li>
+						          <li class = "nav-item"><a class = "nav-link" href="{% url 'logout' %}">Logout</a></li>
+						        </ul>
+				      		</li>
+		                </ul>    
+		            </div> 
+		        </div>
+	    	</nav>
+
+		{% else %}
+
+			<nav class = "navbar navbar-dark navbar-expand-sm">
+		        <div class = "container">
+		            <button class = "navbar-toggler" type = "button" data-toggle = "collapse" data-target = "#Navbar">
+		                <span class = "navbar-toggler-icon"></span>
+		            </button>
+		            <a class="navbar-brand mr-auto" href="#">EMS</a>
+		            <div class = "collapse navbar-collapse" id = "Navbar">
+		                <ul class = "navbar-nav ml-auto">
+		                    <li class="nav-item active">
+		                    	<a class="nav-link active" href="/home">Home</span></a>
+		                    </li>
+		                    <li class="nav-item">
+		                    	<a class="nav-link" href="/permissible_emissions"></a>
+		                    </li>
+				      	    <li class="nav-item">
+				        		<a class="nav-link" href="#">Complaints</a>
+				      		</li>
+				      	    <li class="nav-item">
+				        		<a class="nav-link" href="#">Survey Data</a>
+				      		</li>
+				      		<li class="nav-item dropdown">
+				        		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">My Profile
+							        <span class="caret"></span></a>
+						        <ul class="dropdown-menu" style = "background-color: #31b760;">
+						          <li class = "nav-item" ><a class = "nav-link" href="profile.html">My Profile</a></li>
+						          <li class = "nav-item"><a class = "nav-link" href="{% url 'logout' %}">Logout</a></li>
+						        </ul>
+				      		</li>
+		                </ul>    
+		            </div> 
+		        </div>
+	    	</nav>
+		{% endif %}	-->		
+			<nav class = "navbar navbar-dark navbar-expand-sm">
+		        <div class = "container">
+		            <button class = "navbar-toggler" type = "button" data-toggle = "collapse" data-target = "#Navbar">
+		                <span class = "navbar-toggler-icon"></span>
+		            </button>
+		            <a class="navbar-brand mr-auto" href="#">EMS</a>
+		            <div class = "collapse navbar-collapse" id = "Navbar">
+		                <ul class = "navbar-nav ml-auto">
+		                    <li class="nav-item active">
+		                    	<a class="nav-link" href="/home">Home</span></a>
+		                    </li>
+		                    <li class="nav-item">
+		                    	<a class="nav-link" href="/permissible_emissions">MPE</a>
+		                    </li>
+		                    {% if person.role == "Auditor" %}
+			                    <li class="nav-item">
+					        		<a class="nav-link" href="#">Audit</a>
+					      		</li>
+					      	{% elif person.role == "Supervisor" %}
+			                    <li class="nav-item">
+					        		<a class="nav-link" href="#">Emission Data</a>
+					      		</li>			
+					      	{% elif person.role == "Surveyor" %}
+					      		<li class="nav-item">
+				        			<a class="nav-link" href="#">Survey Data</a>
+				      			</li>
+				      		{% else %}	
+			                    <li class="nav-item">
+			                    	<a class="nav-link" href="#">Articles</a>
+			                    </li>
+			                    <li class="nav-item">
+			                    	<a class="nav-link" href="#about">About</a>
+			                    </li>
+					      	    <li class="nav-item">
+					        		<a class="nav-link" href="#">Survey Data</a>
+					      		</li>			                    
+				      			<li class="nav-item dropdown">
+					        		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Complaints
+								        <span class="caret"></span></a>
+							        <ul class="dropdown-menu" style = "background-color: #31b760;">
+							          <li class = "nav-item" ><a class = "nav-link" href="/lodge_complaint">Lodge Complaint</a></li>
+							          <li class = "nav-item"><a class = "nav-link" href="/track_complaint">Track Complaint</a></li>
+							        </ul>
+				      			</li>
+					      	{% endif %}
+				      		<li class="nav-item dropdown">
+				        		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">My Profile
+							        <span class="caret"></span></a>
+						        <ul class="dropdown-menu" style = "background-color: #31b760;">
+						          <li class = "nav-item" ><a class = "nav-link" href="/profile">My Profile</a></li>
+						          <li class = "nav-item"><a class = "nav-link" href="{% url 'logout' %}">Logout</a></li>
+						        </ul>
+				      		</li>
+		                </ul>    
+		            </div> 
+		        </div>
+	    	</nav>	
+	{% else %}
+		<a href="{% url 'login' %}">Login</a>
+	{% endif %}
+{% endblock %}
+
+
+<!--
+<ul>
+{% for val in ls %}   # this list is a key for a list in the context dictionary passed via view 
+	<li>{{key}}, {{value}}</li>
+{% endfor %}
+</ul>
+-->

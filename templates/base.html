@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang = "en">
+	<head>
+		{% load static %}
+		<!-- add favicon here-->
+		<title>Environment Management System</title>
+		<link rel="icon" type="image/x-icon" href="static/favicon.ico">
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="{% static 'css/base.css' %}">
+		
+		{% block add_files %}
+		{% endblock %}
+	</head>
+	<body>
+		<!--content is a variable for block, so we can replace various blocks by using different block var names -->
+		{% block content %}
+		<nav class = "navbar navbar-dark navbar-expand-sm">
+	        <div class = "container">
+	            <button class = "navbar-toggler" type = "button" data-toggle = "collapse" data-target = "#Navbar">
+	                <span class = "navbar-toggler-icon"></span>
+	            </button>
+	            <a class="navbar-brand mr-auto" href="#">EMS</a>
+	            <div class = "collapse navbar-collapse" id = "Navbar">
+	                <ul class = "navbar-nav ml-auto">
+	                    <li class="nav-item active">
+	                    	<a class="nav-link" href="/">Home</a>
+	                    </li>
+	                    <li class="nav-item">
+	                    	<a class="nav-link" href="/permissible_emissions">MPE</a>
+	                    </li>
+	                    <li class="nav-item">
+	                    	<a class="nav-link" href="#">Articles</a>
+	                    </li>
+	                    <li class="nav-item">
+	                    	<a class="nav-link" href="#about">About</a>
+	                    </li>
+	                    <li class="nav-item">
+	                    	<a class = "nav-link" href="{% url 'login' %}">Login</a>
+	                    </li>
+	                </ul>    
+	            </div> 
+	        </div>
+    	</nav>
+		{% endblock %}
+
+		{% block content_2 %}
+		    <section class = "bg pb-2">
+			    <div class ="container text-center text-white" >
+			    	<div class = "row" style = "border-bottom: 0px;  min-height: 20vh">
+			    	</div>
+			    	<div class = "row row-content" style = "border-bottom: 0px;">
+			      		<div class = "col-12 col-sm-10 offset-sm-1">
+			      			<h1 style = "font-size: 4rem;">Enviornment Management System</h1>
+			      			<p style="font-size:1.5em;">A brief description here</p>
+			      		</div>
+			  		</div>
+			    </div>	
+		    </section>
+		    <div class ="container" id = "about">
+		    	<div class = "row row-content" style = "border-bottom: 0px;">
+		      		<h1>About us</h1>
+		  		</div>
+		    </div>
+        </div>	
+		{% endblock %}
+		{% block content_3 %}
+		{% endblock %}
+		<!-- Footer -->
+		<footer class = "footer">
+	        <div class = "container">
+	           <div class = "row justify-content-center">             
+	                <div class = "col-auto">
+	                    <p>© Copyright 2021 Company name</p>
+	                </div>
+	           </div>
+	        </div>
+	    </footer>
+	    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	</body>
+</html>
