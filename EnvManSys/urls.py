@@ -31,8 +31,9 @@ urlpatterns = [
     path('edit/',views.edit_view, name = 'edit'),
     path('home/', views.home_view, name = 'home'),
     path('lodge_complaint/', views.lodge_complaint_view, name = 'lodge_complaint'),
-    path('track_complaint/', views.track_complaint_view, name = 'track_complaint'),    
-    path('track_complaint/<int:complaint_id>', views.track_complaint2_view, name = 'track_complaint2'),    
+    path('emissions/', views.enter_emissions, name = 'enter_emissions'),
+    path('track_complaint/', views.track_complaint_view, name = 'track_complaint'),
+    path('track_complaint/<int:complaint_id>', views.track_complaint2_view, name = 'track_complaint2'),
 
     #AuthenticationUrl's
     path('login/', views.login_view, name = 'login'),

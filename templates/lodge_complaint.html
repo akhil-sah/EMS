@@ -16,7 +16,7 @@
             <div class = "collapse navbar-collapse" id = "Navbar">
                 <ul class = "navbar-nav ml-auto">
                     <li class="nav-item">
-                    	<a class="nav-link" href="/home">Home</span></a>
+                    	<a class="nav-link" href="/home">Home</a>
                     </li>
                     <li class="nav-item">
                     	<a class="nav-link" href="/permissible_emissions">MPE</a>
@@ -29,7 +29,7 @@
                     </li>
 		      	    <li class="nav-item">
 		        		<a class="nav-link" href="#">Survey Data</a>
-		      		</li> 
+		      		</li>
 	      			<li class="nav-item dropdown active">
 		        		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Complaints
 					        <span class="caret"></span></a>
@@ -46,10 +46,10 @@
 				          <li class = "nav-item"><a class = "nav-link" href="{% url 'logout' %}">Logout</a></li>
 				        </ul>
 		      		</li>
-                </ul>    
-            </div> 
+                </ul>
+            </div>
         </div>
-	</nav>	
+	</nav>
 {% endblock %}
 
 {% block content_2 %}
@@ -65,21 +65,21 @@
                     <label for="complaint" class = "col-md-2 col-form-label">Complaint description</label>
                     <div class = "col-md-10">
                         <textarea class = "form-control" id = "complaint" name = "complaint"
-                        rows = "12" placeholder= "Complaint description"></textarea> 
+                        rows = "12" placeholder= "Complaint description"></textarea>
                     </div>
                 </div>
                 <div class = "form-group row">
                     <label for="rules_violated" class = "col-md-2 col-form-label">Rules Violated</label>
-                    <div class = "col-md-10">  
+                    <div class = "col-md-10">
                         <textarea class = "form-control" id = "rules_violated" name = "rules_violated"
-                        rows = "12" placeholder= "Rules Violated"></textarea> 
+                        rows = "12" placeholder= "Rules Violated"></textarea>
                     </div>
                 </div>
                 <div class = "form-group row">
                     <div class = "col-md-10 offset-md-2">   <!--id should match the for of the label-->
                         <button type = "submit" class = "btn btn-primary">
                             Lodge Complaint
-                        </button> 
+                        </button>
                     </div>
                 </div>
             </form>

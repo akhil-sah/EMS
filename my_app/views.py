@@ -66,7 +66,7 @@ def register_view(request):
 def edit_view(request):
 	if request.method == 'POST':
 		user_form = user_edit_form(instance = request.user,data = request.POST)
-		
+
 		if user_form.is_valid():
 			user_form.save()
 
@@ -101,11 +101,11 @@ def profile_view(request):
 def lodge_complaint_view(request):
 	if request.method == 'POST':
 		user_form = lodge_complaint_form(instance = request.user, data = request.POST)
-		
-		if user_form.is_valid(): 
+
+		if user_form.is_valid():
 			user = request.user
 			person = Person.objects.get(user = user)
-			
+
 			cd = user_form.cleaned_data
 			complaint = cd['complaint']
 			rules_violated = cd['rules_violated']
@@ -117,7 +117,16 @@ def lodge_complaint_view(request):
 	else:
 		user_form = user_edit_form(instance = request.user)
 
-	return render(request,'lodge_complaint.html', {'user_form':user_form}) 
+	return render(request,'lodge_complaint.html', {'user_form':user_form})
+
+@login_required
+def enter_emissions(request):
+	context = {
+		"attributes_left": ["CO2", "NH3", "CH4"],
+		"attributes_filled": {"H2O": 10, "SO2": 20, "H2S": 30},
+	}
+	return render(request,'emissions.html', context)
+
 
 @login_required
 def track_complaint_view(request):
