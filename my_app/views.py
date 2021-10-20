@@ -109,7 +109,7 @@ def lodge_complaint_view(request):
 			cd = user_form.cleaned_data
 			complaint = cd['complaint']
 			rules_violated = cd['rules_violated']
-
+ 
 			obj = Complaints(person = person, complaint = complaint, rules_violated = rules_violated)
 			obj.save()
 			return render(request,'complaint_lodged.html',{'user':user, 'complaint':obj})
