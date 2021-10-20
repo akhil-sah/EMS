@@ -1,0 +1,9 @@
+Performing system checks...
+
+System check identified no issues (0 silenced).
+October 20, 2021 - 14:47:24
+Django version 3.2.8, using settings 'EnvManSys.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+Supervisor
+Supervisor

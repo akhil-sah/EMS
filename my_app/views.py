@@ -113,7 +113,6 @@ def lodge_complaint_view(request):
 			obj = Complaints(person = person, complaint = complaint, rules_violated = rules_violated)
 			obj.save()
 			return render(request,'complaint_lodged.html',{'user':user, 'complaint':obj})
-
 	else:
 		user_form = user_edit_form(instance = request.user)
 
@@ -121,10 +120,33 @@ def lodge_complaint_view(request):
 
 @login_required
 def enter_emissions(request):
+	lefts = getattr(Emission_parameters, 'substance_name')
+	print('***\n', lefts, '\n***')
 	context = {
-		"attributes_left": ["CO2", "NH3", "CH4"],
+		"attributes_left": ["substance a", "substance b", "substance c"],
 		"attributes_filled": {"H2O": 10, "SO2": 20, "H2S": 30},
 	}
+	if request.method == 'POST':
+		user_form = enter_emissions_form(instance = request.user, data = request.POST)
+		print("alpha check")
+		# if user_form.is_valid():
+		if True:
+			print('beta check')
+			user = request.user
+			person = Person.objects.get(user = user)
+			print(user_form)
+			cd = user_form.cleaned_data
+			print("***\n", cd, "\n***")
+			# attr= cd['select-attribute']
+			value = cd['value']
+			# print(attr, value)
+			context.update({'user': user, 'attr': 1, 'value': 2})
+		else:
+			print('beta check failed')
+			print(user_form.errors)
+	else:
+		user_form = user_edit_form(instance = request.user)
+		context.update({'user_form': user_form})
 	return render(request,'emissions.html', context)
 
 
