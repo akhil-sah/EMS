@@ -33,8 +33,12 @@ urlpatterns = [
     path('lodge_complaint/', views.lodge_complaint_view, name = 'lodge_complaint'),
     path('emissions/', views.enter_emissions, name = 'enter_emissions'),
     path('track_complaint/', views.track_complaint_view, name = 'track_complaint'),
-    path('track_complaint/<int:complaint_id>', views.track_complaint2_view, name = 'track_complaint2'),
+    path('audit_complaints/', views.audit_complaints_view, name = 'audit_complaints'),
+    path('audit_surveys/', views.audit_surveys_view, name = 'audit_surveys'),
+    path('audit_emissions/', views.audit_emissions_view, name = 'audit_emissions'),
 
+#    path('track_complaint/<int:complaint_id>', views.track_complaint2_view, name = 'track_complaint2'),
+ 
     #AuthenticationUrl's
     path('login/', views.login_view, name = 'login'),
     path('register/', views.register_view, name = 'register'),

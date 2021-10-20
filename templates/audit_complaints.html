@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block add_files %}
+<link rel = "stylesheet" href= "{% static 'css/complaints.css' %}">
+{% endblock %}
+
+{% block content %}
+	<nav class = "navbar navbar-dark navbar-expand-sm">
+        <div class = "container">
+            <button class = "navbar-toggler" type = "button" data-toggle = "collapse" data-target = "#Navbar">
+                <span class = "navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand mr-auto" href="/home">EMS</a>
+            <div class = "collapse navbar-collapse" id = "Navbar">
+                <ul class = "navbar-nav ml-auto">
+                    <li class="nav-item">
+                    	<a class="nav-link" href="/home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                    	<a class="nav-link" href="/permissible_emissions">MPE</a>
+                    </li>
+                    <li class="nav-item dropdown active">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Audit
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu" style = "background-color: #31b760;">
+                          <li class = "nav-item" ><a class = "nav-link" href="/audit_emissions">Audit Emissions</a></li>
+                          <li class = "nav-item"><a class = "nav-link" href="/audit_surveys">Audit Surveys</a></li>
+                          <li class = "nav-item" ><a class = "nav-link" href="/audit_complaints">Audit Complaints</a></li>
+                        </ul>
+                    </li>
+		      		<li class="nav-item dropdown">
+		        		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">My Profile
+					        <span class="caret"></span></a>
+				        <ul class="dropdown-menu" style = "background-color: #31b760;">
+				          <li class = "nav-item" ><a class = "nav-link" href="/profile">My Profile</a></li>
+				          <li class = "nav-item"><a class = "nav-link" href="{% url 'logout' %}">Logout</a></li>
+				        </ul>
+		      		</li>
+                </ul>
+            </div>
+        </div>
+	</nav>
+{% endblock %}
+
+{% block content_2 %}
+    <div class ="container">
+        <div class = "row row-content">
+            <h1>Complaints</h1>
+            <div class = "col-12 col-sm-12">
+                <p>about surveys (what is covered in servey and all)</p>
+            </div>
+        </div>
+        <div class ="row row-content">
+            <div class = "col-12 col-sm-9">
+               <h2>Complaint list</h2>
+               <div class = "table-responsive">
+                   <table class = "table table-striped">
+                       <thead class = "thead-dark">
+                           <tr>
+                               <th>Complaintant</th>
+                               <th>Complaint</th>
+                               <th>Rules violated</th>
+                               <th>Status</th>
+                               <th>Last update</th>
+                           </tr>
+                       </thead>
+                       <tbody>
+                        {% for complaint in complaints %}
+                           <tr><!-- add a modal for adding feedback and changing status-->
+                                {% if complaint.person == "" %}
+                                    <th>Anonymous</th>
+                                {% else %}
+                                    <th>{{complaint.person}}</th>
+                                {% endif %}
+                                <td>{{complaint.complaint}}</td>
+                                <td>{{complaint.rules_violated}}</td>
+                                <td>{{complaint.status}}</td>
+                                <td>{{complaint.last_update}}</td>
+                           </tr>
+                        {% endfor %}
+                       </tbody>
+                   </table>
+               </div>
+           </div>
+        </div>
+    </div>
+</div>  
+{% endblock %}

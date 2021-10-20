@@ -36,6 +36,7 @@ class enter_emissions_form(forms.ModelForm):
 # TODO: Modify the form appropriatly
 		model = Complaints
 		fields = ('id','complaint', 'rules_violated')
-
+"""
 class track_complaint_form(forms.Form):
 	complaint_id = forms.IntegerField()
+"""

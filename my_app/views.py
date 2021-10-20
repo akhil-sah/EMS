@@ -126,7 +126,7 @@ def enter_emissions(request):
 		"attributes_filled": {"H2O": 10, "SO2": 20, "H2S": 30},
 	}
 	return render(request,'emissions.html', context)
-
+ 
 
 @login_required
 def track_complaint_view(request):
@@ -134,12 +134,31 @@ def track_complaint_view(request):
 	person = Person.objects.get(user = user)
 	complaints = Complaints.objects.filter(person = person).order_by('last_update')
 	return render(request,'track_complaint.html',{'complaints':complaints})
-
+"""
 @login_required
 def track_complaint2_view(request, complaint_id):
 	complaint = get_object_or_404(Complaints, pk = complaint_id)
 	return render(request,'track_complaint.html',{'complaint':complaint})
+"""
 
+@login_required
+def audit_complaints_view(request):
+	#add a feedback column for each complaint (not visible to complainer)
+	#this will be edited by auditor and a mail with feedback sent to complainer
+	complaints = Complaints.objects.filter().order_by('last_update')
+	return render(request,'audit_complaints.html',{'complaints':complaints})
+
+@login_required
+def audit_surveys_view(request):
+	sessions = Session.objects.filter().order_by('date')
+	return render(request,'audit_surveys.html',{'sessions':sessions})
+	
+
+@login_required
+def audit_emissions_view(request):
+	stnd_emissions = Emission_parameters.objects.filter().order_by('substance_name')
+	company_emissions = Company_emissions.objects.filter().order_by('session.date')
+	return render(request,'audit_emissions.html',{'stnd_emissions':stnd_emissions, 'company_emissions':company_emissions})
 
 """
 @login_required

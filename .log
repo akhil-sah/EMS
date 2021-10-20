@@ -3,11 +3,10 @@ In html file use if else for role and based on role show different content
 When username already present no message is being shown
 
 
-Audit (navbar) (make it drop down): will redirect to a page havinf 3 options, audit emissions, audit complaints, audit surveys
+The final report of the audit will be stored somewhere else and a reference of the same need to
+be stored.
+
+should make a table containing report of  all the three kinds of audits?
 
 
- <div class="form-outline mb-4">
-                    					<label class="form-label" for = "first_name">Name</label>
-                    					<input type="email" id="first_name" name = "first_name" class = "inp"
-                    					placeholder="Enter your name" />
-                  					</div>
+make audit emissions page like drop down
