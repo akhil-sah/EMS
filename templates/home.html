@@ -153,13 +153,13 @@
 		                    <li class="nav-item">
 		                    	<a class="nav-link" href="/permissible_emissions">MPE</a>
 		                    </li>
-		                    {% if person.role == "Auditor" %}
+		             {% if person.role == "Auditor" %}
 			                    <li class="nav-item">
 					        		<a class="nav-link" href="#">Audit</a>
 					      		</li>
 					      	{% elif person.role == "Supervisor" %}
 			              <li class="nav-item">
-					        		<a class="nav-link" href="{% url 'emissions' %}">Emission Data</a>
+					        		<a class="nav-link" href="{% url 'select_session' %}">Emission Data</a>
 					      		</li>
 					      	{% elif person.role == "Surveyor" %}
 					      		<li class="nav-item">

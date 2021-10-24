@@ -2,8 +2,6 @@
 
 {% block content_2 %}
 <div class="container">
-  <h1>{{attr}}
-  <h1>{{value}}</h1>
   <div class="row-container display-1">
     Emission Data
   </div>
@@ -11,10 +9,9 @@
     {% csrf_token %}
     <div class="form-group row">
       <label for="attribute" class="col-form-label col-md-3">Name of Attribute</label>
-      <input type="text" name="substance" value="">
       <select class="select-attribute col-md-3 form-control" name="substance">
         {% for attribute in attributes_left %}
-          <option value="{{attribute}}">{{attribute}}</option>
+          <option value="{{attribute.id}}">{{attribute.substance_name}}</option>
         {% endfor %}
       </select>
       <label for="value" class="col-form-label col-md-3">Value</label>
@@ -24,18 +21,18 @@
       <button type="submit" name="button" value="submit" class="btn btn-primary">Submit</button>
     </div>
   </form>
-    <table class="table table-hover table-striped">
-    <thead class="thead-light">
+    <table class="table table-striped">
+    <thead class="thead-dark">
       <th>#</th>
       <th>Attribute</th>
       <th>Values</th>
     </thead>
     <tbody class="">
-      {% for key, value in attributes_filled.items %}
+      {% for attr in attributes_filled %}
         <tr>
           <th>{{forloop.counter}}</th>
-          <td>{{key}}</td>
-          <td>{{value}}</td>
+          <td>{{attr.substance.substance_name}}</td>
+          <td>{{attr.value}}</td>
         </tr>
       {% endfor %}
     </tbody>
