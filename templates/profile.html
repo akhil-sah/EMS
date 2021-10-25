@@ -22,16 +22,22 @@
                     	<a class="nav-link" href="/permissible_emissions">MPE</a>
                     </li>
                     {% if person.role == "Auditor" %}
-	                    <li class="nav-item">
-			        		<a class="nav-link" href="#">Audit</a>
-			      		</li>
+	                    <li class="nav-item dropdown">
+	                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Audit
+	                            <span class="caret"></span></a>
+	                        <ul class="dropdown-menu" style = "background-color: #31b760;">
+	                          <li class = "nav-item" ><a class = "nav-link" href="/audit_emissions">Audit Emissions</a></li>
+	                          <li class = "nav-item"><a class = "nav-link" href="/audit_surveys">Audit Surveys</a></li>
+	                          <li class = "nav-item" ><a class = "nav-link" href="/audit_complaints">Audit Complaints</a></li>
+	                        </ul>
+	                    </li>
 			      	{% elif person.role == "Supervisor" %}
 	                    <li class="nav-item">
 			        		<a class="nav-link" href="#">Emission Data</a>
 			      		</li>			
 			      	{% elif person.role == "Surveyor" %}
 			      		<li class="nav-item">
-		        			<a class="nav-link" href="#">Survey Data</a>
+		        			<a class="nav-link" href="/surveys">Surveys</a>
 		      			</li>
 		      		{% else %}			      	
                     <li class="nav-item">
@@ -64,4 +70,47 @@
             </div> 
         </div>
 	</nav>	
+{% endblock %}
+
+{% block content_2 %}
+<!--    <div class ="container">
+        <div class = "row row-content">
+            <div class="col-12">
+               <h2>Profile</h2>
+            </div> 
+            <div class="col-12 col-md-9">
+                <form action = "{% url 'new_survey' %}" method = "POST">
+                    {% csrf_token %}
+                    <div class = "form-row">
+                        <div class="form-group col-sm-4">
+                            <label for="username" class = "col-md-2 col-form-label">Username</label>
+                            <input type="email" id="email" name = "email" placeholder="name@email.com"/>
+                        </div>
+                    </div>
+                    <div class = "form-row">
+                        <div class = "form-group col-sm-4">
+                            <label for="date" class = "col-md-2 col-form-label">Survey date</label>
+                            <input type="date" id="date" name = "date"/>
+                        </div>
+                    </div>
+                    <div class = "form-row">
+                        <div class = "form-group col-sm-4">
+                            <label for="population" class = "col-md-2 col-form-label">Target population</label>
+                            <input type="number" id="population" name = "population"/>
+                        </div>
+                    </div>
+                    <div class = "form-row">
+                        <div class = "col-md-10 offset-md-2">  
+                            <button type = "submit" class = "btn btn-primary">
+                                Create
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-12 col-md">
+            </div>
+        </div>
+    </div>
+-->
 {% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block add_files %}
+<link rel = "stylesheet" href= "{% static 'css/complaints.css' %}">
+{% endblock %}
+ 
+{% block content %}
+	<nav class = "navbar navbar-dark navbar-expand-sm">
+        <div class = "container">
+            <button class = "navbar-toggler" type = "button" data-toggle = "collapse" data-target = "#Navbar">
+                <span class = "navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand mr-auto" href="/home">EMS</a>
+            <div class = "collapse navbar-collapse" id = "Navbar">
+                <ul class = "navbar-nav ml-auto">
+                    <li class="nav-item">
+                    	<a class="nav-link" href="/home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                    	<a class="nav-link" href="/permissible_emissions">MPE</a>
+                    </li>
+                    <li class="nav-item active">
+                    	<a class="nav-link" href="#">Surveys</a>
+                    </li>
+		      		<li class="nav-item dropdown">
+		        		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">My Profile
+					        <span class="caret"></span></a>
+				        <ul class="dropdown-menu" style = "background-color: #31b760;">
+				          <li class = "nav-item" ><a class = "nav-link" href="/profile">My Profile</a></li>
+				          <li class = "nav-item"><a class = "nav-link" href="{% url 'logout' %}">Logout</a></li>
+				        </ul>
+		      		</li>
+                </ul>    
+            </div> 
+        </div>
+	</nav> 
+{% endblock %}
+ 
+{% block content_2 %}
+    <div class ="container">
+        <div class = "row row-content">
+            <div class="col-12">
+               <h2>Create Survey</h2>
+            </div> 
+            <div class="col-12 col-md-9">
+                <form action = "{% url 'new_survey' %}" type = "POST" method = "POST">
+                    {% csrf_token %}
+                    <div class = "form-row">
+                        <div class="form-group col-sm-10">
+                            <label for="auditor" class = "col-md-4 col-form-label" title = "Enter email id of auditor who will be auditing the survey">Auditor's Email</label>
+                            <input type="email" id="auditor" name = "auditor" placeholder="name@email.com"/>
+                        </div>
+                    </div>
+                    <div class = "form-row">
+                        <div class = "form-group col-sm-10">
+                            <label for="date" class = "col-md-4 col-form-label">Survey date</label>
+                            <input type="date" id="date" name = "date"/>
+                        </div>
+                    </div>
+                    <div class = "form-row">
+                        <div class = "form-group col-sm-10">
+                            <label for="population" class = "col-md-4 col-form-label">Target population</label>
+                            <input type="number" id="population" name = "population"/>
+                        </div>
+                    </div>
+                    <div class = "form-row">
+                        <div class = "col-md-10 offset-md-2">   <!--id should match the for of the label-->
+                            <button type = "submit" class = "btn btn-primary">
+                                Create
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-12 col-md">
+            </div>
+        </div>
+    </div>
+{% endblock %}

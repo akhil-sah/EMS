@@ -3,7 +3,7 @@
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
 Examples:
-Function views
+Function views 
     1. Add an import:  from my_app import views
     2. Add a URL to urlpatterns:  path('', views.home, name='home')
 Class-based views
@@ -24,20 +24,21 @@ urlpatterns = [
 #    path('survey_data/<int:survey_id>/',views.survey_data_view, name = 'survey_data'),
 #    path('my_app/',include('my_app.urls')),
 
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls), 
     path('', views.index_view, name = 'index'),
     path('permissible_emissions/', views.permissible_emissions_view, name = 'permissible_emissions'),
     path('profile/',views.profile_view, name = 'profile'),
-    path('edit/',views.edit_view, name = 'edit'),
+#    path('profile/',views.edit_view, name = 'profile'),
     path('home/', views.home_view, name = 'home'),
     path('lodge_complaint/', views.lodge_complaint_view, name = 'lodge_complaint'),
     path('emissions/', views.enter_emissions, name = 'enter_emissions'),
     path('track_complaint/', views.track_complaint_view, name = 'track_complaint'),
-    path('audit_complaints/', views.audit_complaints_view, name = 'audit_complaints'),
+    path('audit_complaints/<int:complaint_id>', views.audit_complaints_view, name = 'audit_complaints'),
     path('audit_surveys/', views.audit_surveys_view, name = 'audit_surveys'),
     path('audit_emissions/', views.audit_emissions_view, name = 'audit_emissions'),
-
-#    path('track_complaint/<int:complaint_id>', views.track_complaint2_view, name = 'track_complaint2'),
+    path('surveys/', views.surveys_view, name = 'surveys'),
+    path('new_survey/', views.new_survey_view, name = 'new_survey'),
+    path('surveys/<int:survey_id>/survey_form/', views.survey_form_view, name = 'survey_form'),
  
     #AuthenticationUrl's
     path('login/', views.login_view, name = 'login'),
