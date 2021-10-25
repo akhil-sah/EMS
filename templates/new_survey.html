@@ -21,9 +21,21 @@
                     <li class="nav-item">
                     	<a class="nav-link" href="/permissible_emissions">MPE</a>
                     </li>
-                    <li class="nav-item active">
-                    	<a class="nav-link" href="#">Surveys</a>
-                    </li>
+                    {% if pers.role == "Surveyer" %}
+                        <li class="nav-item active">
+                        	<a class="nav-link" href="/surveys">Surveys</a>
+                        </li>
+                    {% elif pers.role == "Auditor" %}
+                        <li class="nav-item dropdown active">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Audit
+                                <span class="caret"></span></a>
+                            <ul class="dropdown-menu" style = "background-color: #31b760;">
+                              <li class = "nav-item" ><a class = "nav-link" href="/audit_emissions">Audit Emissions</a></li>
+                              <li class = "nav-item"><a class = "nav-link" href="/audit_surveys">Audit Surveys</a></li>
+                              <li class = "nav-item" ><a class = "nav-link" href="/audit_complaints">Audit Complaints</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
 		      		<li class="nav-item dropdown">
 		        		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">My Profile
 					        <span class="caret"></span></a>

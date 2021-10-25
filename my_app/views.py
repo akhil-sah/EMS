@@ -166,7 +166,7 @@ def enter_emissions(request):
 def track_complaint_view(request):
 	user = request.user
 	person = Person.objects.get(user = user)
-	complaints = Complaints.objects.filter(person = person).order_by('last_update')
+	complaints = Complaints.objects.filter(person = person).order_by('-last_update')
 	return render(request,'track_complaint.html',{'complaints':complaints})
 """
 @login_required
@@ -181,27 +181,53 @@ def audit_complaints_view(request):
 	#this will be edited by auditor and a mail with feedback sent to complainer
 	complaints = Complaints.objects.all().order_by('last_update')
 	return render(request,'audit_complaints.html',{'complaints':complaints})
-"""
+""" 
 @login_required
-def audit_complaints_view(request, complaint_id):
+def audit_complaints_view(request):
 	#add a feedback column for each complaint (not visible to complainer)
 	#this will be edited by auditor and a mail with feedback sent to complainer
-	print(complaint_id)
-	complaints = Complaints.objects.all().order_by('last_update')
-	if request.method == "POST":
-		complaint = Complaints.objects.get(id = complaint_id)
+	complaints = Complaints.objects.all().order_by('-last_update')
+	return render(request,'audit_complaints.html',{'complaints':complaints})
+
+@login_required
+def complaint_feedback_view(request, complaint_id):
+	complaint = Complaints.objects.get(id = complaint_id)
+	if request.method == 'POST':
 		complaint.feedback = request.POST['feedback']
 		complaint.status = request.POST['status']
 		complaint.save()
-	print('rendered')
-	return render(request,'audit_complaints.html',{'complaints':complaints})
-
+		return redirect('audit_complaints')
+		#add email part
+	return render(request,'complaint_feedback.html',{'complaint':complaint})
 
 @login_required
 def audit_surveys_view(request):
-	sessions = Session.objects.all().order_by('date')
-	return render(request,'audit_surveys.html',{'sessions':sessions})
-	
+	surveys = Survey_metadata.objects.all().order_by('-date')
+	return render(request,'audit_surveys.html',{'surveys':surveys})
+
+@login_required
+def survey_response_view(request, survey_id, response_id = 0):
+	survey = Survey_metadata.objects.get(id = survey_id)
+	responses = Survey_data.objects.filter(survey_id = survey)
+	if request.method == 'POST':
+		print(request.POST)
+		response = Survey_data.objects.get(id = response_id)
+		response.status = request.POST['status'] #add button that changes value attribute of status input
+		if response.status == "Not addressed":
+			pass
+		elif response.status == "Addressed":
+			survey.num_issues -= 1
+			survey.resolved_issues += 1
+		elif response.status == "Irrelevant":
+			survey.num_issues -= 1
+			survey.relevant_issues -= 1
+			survey.resolved_issues += 1
+		else:
+			return HttpResponse("Unidentified status")
+		response.save()
+		survey.save()
+
+	return render(request,'survey_response.html',{'responses':responses, 'survey_id':survey_id})	
 
 @login_required
 def audit_emissions_view(request):
@@ -228,13 +254,14 @@ def surveys_view(request):
 @login_required
 def new_survey_view(request):
 	#print(request.body)
+	pers = Person.objects.get(user = request.user)
 	if request.method == 'POST':
 		#print(request.)
 		user = User.objects.get(email = request.POST['auditor'])
 		person = Person.objects.get(user = user)
 		if person.role != "Auditor":
 			print("Not auditor")
-			return render(request,'new_survey.html', {'user_form':user_form})
+			return render(request,'new_survey.html', {'user_form':user_form, 'pers':pers})
 		data = {
 		'auditor': person,
 		'date': request.POST['date'],
@@ -246,13 +273,12 @@ def new_survey_view(request):
 		if user_form.is_valid():
 			obj = Survey_metadata(auditor = person, date = data['date'], population = data['population'])
 			obj.save()
-			return render(request,'survey_created.html',{'obj':obj})
+			return render(request,'survey_created.html',{'obj':obj, 'pers':pers})
 
 	else:
 		user_form = new_survey_form(instance = request.user)
 
-	return render(request,'new_survey.html', {'user_form':user_form})
-
+	return render(request,'new_survey.html', {'user_form':user_form, 'pers':pers})
 
 @login_required
 def survey_form_view(request, survey_id):
@@ -267,9 +293,9 @@ def survey_form_view(request, survey_id):
 			feedback = cd['feedback']
 			
 			survey = Survey_metadata.objects.get(id = survey_id)
-			survey.population += 1
 			survey.num_issues += 1
 			survey.relevant_issues += 1
+			survey.save()
 
 
 			obj = Survey_data(surveyor = person, person = pers, feedback = feedback, survey_id = survey)

@@ -21,9 +21,21 @@
                     <li class="nav-item">
                     	<a class="nav-link" href="/permissible_emissions">MPE</a>
                     </li>
-                    <li class="nav-item active">
-                    	<a class="nav-link" href="#">Surveys</a>
-                    </li>
+                    {% if pers.role == "Surveyer" %}
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/surveys">Surveys</a>
+                        </li>
+                    {% elif pers.role == "Auditor" %}
+                        <li class="nav-item dropdown active">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Audit
+                                <span class="caret"></span></a>
+                            <ul class="dropdown-menu" style = "background-color: #31b760;">
+                              <li class = "nav-item" ><a class = "nav-link" href="/audit_emissions">Audit Emissions</a></li>
+                              <li class = "nav-item"><a class = "nav-link" href="/audit_surveys">Audit Surveys</a></li>
+                              <li class = "nav-item" ><a class = "nav-link" href="/audit_complaints">Audit Complaints</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
 		      		<li class="nav-item dropdown">
 		        		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">My Profile
 					        <span class="caret"></span></a>
@@ -44,7 +56,9 @@
             <h1>Survey created</h1>
             <div class = "col-12 col-sm-12">
                 <p>The survey was created successfully. The survey ID for this survey is {{obj.id}}.</p>
-                <p>Click <a href = "{% url 'survey_form' obj.id %}">here</a> to enter survey reponses.</p>
+                {% if pers.role == "Surveyer" %}
+                <p>Click <a href = "{% url 'survey_form' obj.id %}">here</a> to enter survey responses.</p>
+                {% endif %}
             </div>
         </div>
     </div>

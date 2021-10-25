@@ -42,41 +42,9 @@
             </div>
         </div>
 	</nav>
-{% endblock %}
+{% endblock %} 
 
 {% block content_2 %}
-    <div id= "{{complaintModal}}" class ="modal fade" role = "dialog">
-        <div class = "modal-dialog modal-lg" role = "content">
-            <div class = "modal-content">
-                <div class = "modal-header">
-                    <h4 class = "modal-title">Status update form</h4>
-                    <button type = "button" class = "close" data-dismiss = "modal">
-                        &times;
-                    </button>
-                </div> 
-                <div class= "modal-body">
-                    <form action="{% url 'audit_complaints' complaints.0.id %}" method="POST" id = "modal_form">
-                        {% csrf_token %}
-                        <div class="form-row">
-                            <div class="form-group col-sm-4">
-                                <label class="sr-only" for="status" title="Change status to resolved or irrelevant">New status</label>
-                                <input class="form-control form-control-sm mr-1" id="status" name="status" value="relevant">
-                            </div>
-                            <div class="form-group col-sm-4">
-                                <label class="sr-only" for="feedback">Feedback</label>
-                                <textarea class="form-control form-control-sm mr-1" id="feedback" name="feedback"></textarea>>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <button type="button" class="btn btn-secondary btn-sm ml-auto" data-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary btn-sm ml-1">Submit</button>        
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class ="container">
         <div class = "row row-content">
             <h1>Complaints</h1>
@@ -85,14 +53,14 @@
             </div>
         </div>
         <div class ="row row-content">
-            <div class = "col-12 col-sm-9">
+            <div class = "col-12 col-sm-12">
                 <h2>Complaint list</h2>
                 <div class = "table-responsive">
                     <table class = "table table-striped">
                         <thead class = "thead-dark">
                             <tr>
-                                <th>Complaintant's Email ID</th>
                                 <th>Complaint ID</th>
+                                <th>Complaintant's Email ID</th>
                                 <th>Complaint</th>
                                 <th>Rules violated</th>
                                 <th>Status</th>
@@ -102,12 +70,12 @@
                         <tbody>
                         {% for complaint in complaints %}
                                 
-                                <tr><!-- add a modal for adding feedback and changing status-->
-                                    <a id="complaintButton"><th>{{complaint.person.user}}</th></a>
-                                    <td id = "cmp_id">{{complaint.id}}</p>
+                                <tr>
+                                    <th><a style = "text-decoration: none;" href = "{% url 'complaint_feedback' complaint.id %}">{{complaint.id}}</a></th>
+                                    <td>{{complaint.person.user}}</td>
                                     <td>{{complaint.complaint}}</td>
                                     <td>{{complaint.rules_violated}}</td>
-                                    <td id = "st">{{complaint.status}}</td>
+                                    <td>{{complaint.status}}</td>
                                     <td>{{complaint.last_update}}</td>
                                 </tr>
                         {% endfor %}
@@ -119,19 +87,3 @@
     </div>
 {% endblock %} 
 
-{% block jscode %}
-<script>
-    $(document).ready(function(){
-        $("#complaintButton").click(function(){
-            var cmp_st = $("#st").val();
-            var id = $("#cmp_id").val();
-            var url = "{% url 'audit_complaints' id %}";
-            var n_url = url.replace('id', id);
-            $("#modal_form").attr("action", n_url);
-            $("#status").attr("value", cmp_st);
-            $('#complaintModal').modal('show');
-        });
-    });
-
-</script>
-{% endblock %}

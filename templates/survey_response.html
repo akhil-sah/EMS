@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block add_files %}
+<link rel = "stylesheet" href= "{% static 'css/complaints.css' %}">
+{% endblock %}
+ 
+{% block content %}
+    <nav class = "navbar navbar-dark navbar-expand-sm">
+        <div class = "container">
+            <button class = "navbar-toggler" type = "button" data-toggle = "collapse" data-target = "#Navbar">
+                <span class = "navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand mr-auto" href="/home">EMS</a>
+            <div class = "collapse navbar-collapse" id = "Navbar">
+                <ul class = "navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/permissible_emissions">MPE</a>
+                    </li>
+                    <li class="nav-item dropdown active">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Audit
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu" style = "background-color: #31b760;">
+                          <li class = "nav-item" ><a class = "nav-link" href="/audit_emissions">Audit Emissions</a></li>
+                          <li class = "nav-item"><a class = "nav-link" href="/audit_surveys">Audit Surveys</a></li>
+                          <li class = "nav-item" ><a class = "nav-link" href="/audit_complaints">Audit Complaints</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">My Profile
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu" style = "background-color: #31b760;">
+                          <li class = "nav-item" ><a class = "nav-link" href="/profile">My Profile</a></li>
+                          <li class = "nav-item"><a class = "nav-link" href="{% url 'logout' %}">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+ 
+{% block content_2 %}
+    <div class ="container">
+        <div class = "row row-content">
+            <div class="col-12">
+               <h2>Survey reponses for survey {{survey_id}}</h2>
+            </div>
+        </div>
+        <div class ="row row-content">
+            <div class = "col-12 col-sm-12">
+                <h2>Responses</h2>
+                <div class = "table-responsive">
+                    <table class = "table table-striped">
+                        <thead class = "thead-dark">
+                            <tr>
+                                <th>Respondent</th>
+                                <th>Feedback</th>
+                                <th>Current status</th>
+                            </tr> 
+                        </thead>
+                        <tbody>
+                        {% for response in responses %}
+                            <tr>
+                                <th>{{response.person}}</th>
+                                <td>{{response.feedback}}</td>
+                                <td>
+                                    <form action = "{% url 'survey_response' survey_id=survey_id response_id=response.id %}" method = "POST">
+                                        {% csrf_token %}
+                                        <div class = "form-row">
+                                            <div class = "form-group">
+                                                <label for = "status" class = "col-form-label" style = "display: block;"><strong>{{response.status}}</strong></label>
+                                                <div class = "btn-group btn-group-toggle ml-auto" data-toggle = "buttons">
+                                                    <label class = "btn btn-success">
+                                                        <input type = "radio" id = "addressed" name = "status" autocomplete="off" value="Addressed">Addressed
+                                                    </label>
+                                                    <label class = "btn btn-danger">
+                                                        <input type = "radio" id = "irrelevant" name = "status" autocomplete="off" value="Irrelevant">Irrelevant
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class = "form-row">
+                                            <div class = "form-group">
+                                                <button type = "submit" class = "btn btn-primary">
+                                                    Update status
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div> 
+{% endblock %}
