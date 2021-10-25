@@ -6,6 +6,8 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, AnonymousUser
+from django.conf import settings
+from django.core.mail import send_mail
 
 # Create your views here.
 def index_view(request, *args, **kwargs):
@@ -196,6 +198,16 @@ def complaint_feedback_view(request, complaint_id):
 		complaint.feedback = request.POST['feedback']
 		complaint.status = request.POST['status']
 		complaint.save()
+		
+		subject = 'Complaint Status update'
+		message = f"""Hi {complaint.person.user.first_name} {complaint.person.user.last_name}. 
+		Thank you for bringing our attention to problem (mentioned by you in complaint no {complaint.id}.
+		After reviewing the facts provided by the response of our team is given below.
+		{complaint.feedback}"""
+		email_from = settings.EMAIL_HOST_USER
+		recipient_list = [complaint.person.user.email, ]
+		send_mail( subject, message, email_from, recipient_list )
+		
 		return redirect('audit_complaints')
 		#add email part
 	return render(request,'complaint_feedback.html',{'complaint':complaint})
