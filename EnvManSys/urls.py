@@ -43,7 +43,8 @@ urlpatterns = [
     #AuthenticationUrl's
     path('login/', views.login_view, name = 'login'),
     path('register/', views.register_view, name = 'register'),
-    path('logout/',auth_views.LogoutView.as_view(),name = 'logout'),
+#    path('logout/',auth_views.LogoutView.as_view(),name = 'logout'),
+    path('logout/',views.logout_view,name = 'logout'),
     path('password_change/',auth_views.PasswordChangeView.as_view(),name='password_change'),
     path('password_change/done/',auth_views.PasswordChangeDoneView.as_view(),name = 'password_change_done'),
 

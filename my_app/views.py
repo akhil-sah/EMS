@@ -2,7 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.urls import reverse
 from django.shortcuts import render, redirect
 from .models import *
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate, login, logout
 from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, AnonymousUser
@@ -42,6 +42,11 @@ def login_view(request):
 		form = login_form()
 
 	return render(request,'login.html',{'form':form})
+
+@login_required
+def logout_view(request):
+	logout(request)
+	return redirect('index')
 
 def register_view(request):
 	if request.method == 'POST':
