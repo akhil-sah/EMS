@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Person, Complaints, Survey_data, Survey_metadata
+from .models import Person, Complaints, Survey_data, Survey_metadata, Company_emissions
 
 class login_form(forms.Form):
 	username = forms.CharField()               #EmailField()
@@ -41,16 +41,12 @@ class lodge_complaint_form(forms.ModelForm):
 		model = Complaints
 		fields = ('id','complaint', 'rules_violated')
 
-"""
 class enter_emissions_form(forms.ModelForm):
 	class Meta:
-# TODO: Modify the form appropriatly
-		model = Complaints
-		fields = ('id','complaint', 'rules_violated')
+		# TODO: Modify the form appropriatly
+		model = Company_emissions
+		fields = ('substance', 'value')
 
-class track_complaint_form(forms.Form):
-	complaint_id = forms.IntegerField()
-"""
 
 class survey_form_form(forms.ModelForm):
 	class Meta:

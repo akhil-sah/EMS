@@ -30,7 +30,7 @@ def login_view(request):
 				if user.is_active:
 					login(request,user)
 					person = Person.objects.get(user = user)
-					print(person.role)
+					# print(person.role)
 					return render(request,'home.html',{'user':user, 'person':person})
 
 				else:
@@ -145,22 +145,70 @@ def lodge_complaint_view(request):
 			cd = user_form.cleaned_data
 			complaint = cd['complaint']
 			rules_violated = cd['rules_violated']
- 
+
 			obj = Complaints(person = person, complaint = complaint, rules_violated = rules_violated)
 			obj.save()
 			return render(request,'complaint_lodged.html',{'user':user, 'complaint':obj})
-
 	else:
 		user_form = lodge_complaint_form(instance = request.user)
 
 	return render(request,'lodge_complaint.html', {'user_form':user_form})
 
 @login_required
+def select_session_page(request):
+	context = {"sessions": Session.objects.filter(supervisor=Person.objects.get(user=request.user))}
+	print(context["sessions"])
+	if request.method == 'POST':
+		user_form = enter_session_form(instance = request.user, data = request.POST)
+		if user_form.is_valid():
+			user = request.user
+			person = Person.objects.get(user = user)
+			cd = user_form.cleaned_data
+			attr= cd['session']
+			context.update({'user': user})
+	else:
+		# Why this form is passed ?
+		user_form = user_edit_form(instance = request.user)
+		context.update({'user_form': user_form})
+	return render(request,'select_session.html', context)
+
+@login_required
 def enter_emissions(request):
+	'''
+	# NOTE: In this project we pull the list every time new attribute is entered
+	and list of left attributes is pulled from server.
+	Better version is to do all this on client side and support multiple pulls
+	at same time.
+	# NOTE: Only one supervisor should be able to edit the emissions else there
+	is high chance of inconsistancies.
+	'''
+	id=1
+	filled = Company_emissions.objects.filter(session=id)
+	attributes_filled = list()
+	for attr in filled:
+		attributes_filled.append(attr.substance.substance_name)
+	lefts = Emission_parameters.objects.all()
+	attributes_left = list()
+	for attr in lefts:
+		if attr.substance_name in attributes_filled:
+			continue
+		attributes_left.append(attr)
 	context = {
-		"attributes_left": ["CO2", "NH3", "CH4"],
-		"attributes_filled": {"H2O": 10, "SO2": 20, "H2S": 30},
+		"attributes_left": attributes_left,
+		"attributes_filled": filled,
 	}
+	if request.method == 'POST':
+		user_form = enter_emissions_form(instance = request.user, data = request.POST)
+		if user_form.is_valid():
+			user = request.user
+			person = Person.objects.get(user = user)
+			cd = user_form.cleaned_data
+			attr= cd['substance']
+			value = cd['value']
+			context.update({'user': user})
+	else:
+		user_form = user_edit_form(instance = request.user)
+		context.update({'user_form': user_form})
 	return render(request,'emissions.html', context)
  
 
@@ -318,6 +366,62 @@ def survey_form_view(request, survey_id):
 		user_form = survey_form_form(instance = request.user)
 
 	return render(request,'survey_form.html', {'user_form':user_form, 'survey_id':survey_id})
+
+@login_required
+def select_session_page(request):
+	context = {"sessions": Session.objects.filter(supervisor=Person.objects.get(user=request.user))}
+	print(context["sessions"])
+	if request.method == 'POST':
+		user_form = enter_session_form(instance = request.user, data = request.POST)
+		if user_form.is_valid():
+			user = request.user
+			person = Person.objects.get(user = user)
+			cd = user_form.cleaned_data
+			attr= cd['session']
+			context.update({'user': user})
+	else:
+		user_form = enter_session_form(instance = request.user)
+		context.update({'user_form': user_form})
+	return render(request,'select_session.html', context)
+
+@login_required
+def enter_emissions(request):
+	'''
+	# NOTE: In this project we pull the list every time new attribute is entered
+	and list of left attributes is pulled from server.
+	Better version is to do all this on client side and support multiple pulls
+	at same time.
+	# NOTE: Only one supervisor should be able to edit the emissions else there
+	is high chance of inconsistancies.
+	'''
+	id=1
+	filled = Company_emissions.objects.filter(session=id)
+	attributes_filled = list()
+	for attr in filled:
+		attributes_filled.append(attr.substance.substance_name)
+	lefts = Emission_parameters.objects.all()
+	attributes_left = list()
+	for attr in lefts:
+		if attr.substance_name in attributes_filled:
+			continue
+		attributes_left.append(attr)
+	context = {
+		"attributes_left": attributes_left,
+		"attributes_filled": filled,
+	}
+	if request.method == 'POST':
+		user_form = enter_emissions_form(instance = request.user, data = request.POST)
+		if user_form.is_valid():
+			user = request.user
+			person = Person.objects.get(user = user)
+			cd = user_form.cleaned_data
+			attr= cd['substance']
+			value = cd['value']
+			context.update({'user': user})
+	else:
+		user_form = user_edit_form(instance = request.user)
+		context.update({'user_form': user_form})
+	return render(request,'emissions.html', context)
 
 """
 @login_required

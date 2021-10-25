@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content_2 %}
+<div class="container">
+    <div class="row-container display-1">
+        Select Session
+    </div>
+    <form action="{% url 'enter_emissions' %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group row">
+            <label for="session" class="col-form-label col-md-4">ID and Date of session </label>
+            <select class="select-attribute col-md-8 form-control" name="substance">
+            {% for session in sessions %}
+                <option value="{{session.id}}">ID: {{session.id}} - Date: {{session.date}}</option>
+            {% endfor %}
+            </select>
+        </div>
+        <div class="form-group row">
+            <button type="submit" name="button" value="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -11,7 +11,7 @@
 	            <div class = "collapse navbar-collapse" id = "Navbar">
 	                <ul class = "navbar-nav ml-auto">
 	                    <li class="nav-item">
-	                    	<a class="nav-link" href="/home">Home</span></a>
+	                    	<a class="nav-link" href="/home">Home</a>
 	                    </li>
 	                    <li class="nav-item active">
 	                    	<a class="nav-link" href="#">MPE</a>
@@ -29,12 +29,12 @@
 				      	{% elif person.role == "Supervisor" %}
 		                    <li class="nav-item">
 				        		<a class="nav-link" href="#">Emission Data</a>
-				      		</li>			
+				      		</li>
 				      	{% elif person.role == "Surveyor" %}
 				      		<li class="nav-item">
 			        			<a class="nav-link" href="/surveys">Surveys</a>
 			      			</li>
-			      		{% else %}			      	
+			      		{% else %}
 		                    <li class="nav-item">
 		                    	<a class="nav-link" href="#">Articles</a>
 		                    </li>
@@ -58,10 +58,10 @@
 					          <li class = "nav-item"><a class = "nav-link" href="{% url 'logout' %}">Logout</a></li>
 					        </ul>
 			      		</li>
-	                </ul>    
-	            </div> 
+	                </ul>
+	            </div>
 	        </div>
-    	</nav>	
+    	</nav>
 {% else %}
 		<nav class = "navbar navbar-dark navbar-expand-sm">
 	        <div class = "container">
@@ -86,8 +86,8 @@
 	                    <li class="nav-item">
 	                    	<a class = "nav-link" href="{% url 'login' %}">Login</a>
 	                    </li>
-	                </ul>    
-	            </div> 
+	                </ul>
+	            </div>
 	        </div>
     	</nav>
 {% endif %}
@@ -131,5 +131,5 @@
            </div>
   		</div>
     </div>
-</div>	
+</div>
 {% endblock %}

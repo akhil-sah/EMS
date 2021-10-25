@@ -31,6 +31,7 @@ urlpatterns = [
 #    path('profile/',views.edit_view, name = 'profile'),
     path('home/', views.home_view, name = 'home'),
     path('lodge_complaint/', views.lodge_complaint_view, name = 'lodge_complaint'),
+    path('select_session/', views.select_session_page, name = 'select_session'),
     path('emissions/', views.enter_emissions, name = 'enter_emissions'),
     path('track_complaint/', views.track_complaint_view, name = 'track_complaint'),
     path('audit_complaints/', views.audit_complaints_view, name = 'audit_complaints'),

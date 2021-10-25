@@ -2,6 +2,7 @@
 
 {% block content %}
 	{% if user.is_authenticated %}		
+
 			<nav class = "navbar navbar-dark navbar-expand-sm">
 		        <div class = "container">
 		            <button class = "navbar-toggler" type = "button" data-toggle = "collapse" data-target = "#Navbar">
@@ -11,7 +12,7 @@
 		            <div class = "collapse navbar-collapse" id = "Navbar">
 		                <ul class = "navbar-nav ml-auto">
 		                    <li class="nav-item active"> 
-		                    	<a class="nav-link" href="/home">Home</span></a>
+		                    	<a class="nav-link" href="/home">Home</a>
 		                    </li>
 		                    <li class="nav-item">
 		                    	<a class="nav-link" href="/permissible_emissions">MPE</a>
@@ -28,13 +29,13 @@
 				      			</li>
 					      	{% elif person.role == "Supervisor" %}
 			                    <li class="nav-item">
-					        		<a class="nav-link" href="#">Emission Data</a>
+					        		<a class="nav-link" href="{% url 'select_session' %}">Emission Data</a>
 					      		</li>			 
 					      	{% elif person.role == "Surveyor" %}
 					      		<li class="nav-item">
 				        			<a class="nav-link" href="/surveys">Surveys</a>
 				      			</li>
-				      		{% else %}	
+				      		{% else %}
 			                    <li class="nav-item">
 			                    	<a class="nav-link" href="#">Articles</a>
 			                    </li>
@@ -58,10 +59,10 @@
 						          <li class = "nav-item"><a class = "nav-link" href="{% url 'logout' %}">Logout</a></li>
 						        </ul>
 				      		</li>
-		                </ul>    
-		            </div> 
+		                </ul>
+		            </div>
 		        </div>
-	    	</nav>	
+	    	</nav>
 	{% else %}
 		<a href="{% url 'login' %}">Login</a>
 	{% endif %}
@@ -70,7 +71,7 @@
 
 <!--
 <ul>
-{% for val in ls %}   # this list is a key for a list in the context dictionary passed via view 
+{% for val in ls %}   # this list is a key for a list in the context dictionary passed via view
 	<li>{{key}}, {{value}}</li>
 {% endfor %}
 </ul>
