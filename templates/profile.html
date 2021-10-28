@@ -33,8 +33,8 @@
 	                    </li>
 			      	{% elif person.role == "Supervisor" %}
 	                    <li class="nav-item">
-			        		<a class="nav-link" href="#">Emission Data</a>
-			      		</li>			
+                            <a class="nav-link" href="{% url 'select_session' %}">Emission Data</a>
+                        </li>			
 			      	{% elif person.role == "Surveyor" %}
 			      		<li class="nav-item">
 		        			<a class="nav-link" href="/surveys">Surveys</a>
@@ -46,9 +46,6 @@
                     <li class="nav-item">
                     	<a class="nav-link" href="/home">About</a>
                     </li>
-		      	    <li class="nav-item">
-		        		<a class="nav-link" href="#">Survey Data</a>
-		      		</li> 
 	      			<li class="nav-item dropdown">
 		        		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Complaints
 					        <span class="caret"></span></a>
@@ -71,38 +68,51 @@
         </div>
 	</nav>	
 {% endblock %}
-
+ 
 {% block content_2 %}
-<!--    <div class ="container">
+    <div class ="container">
         <div class = "row row-content">
             <div class="col-12">
                <h2>Profile</h2>
+               <p>Welcome {{request.user.first_name}} {{request.user.last_name}}</p>
             </div> 
             <div class="col-12 col-md-9">
-                <form action = "{% url 'new_survey' %}" method = "POST">
+                <form action = "{% url 'profile' %}" method = "POST">
                     {% csrf_token %}
-                    <div class = "form-row">
-                        <div class="form-group col-sm-4">
-                            <label for="username" class = "col-md-2 col-form-label">Username</label>
-                            <input type="email" id="email" name = "email" placeholder="name@email.com"/>
+                    <div class="form-group row">
+                        <label for="first_name" class = "col-md-2 col-form-label">First name</label>
+                        <div class = "col-md-10">
+                            <input class = "form-control" id="first_name" name = "first_name" value="{{request.user.first_name}}" />
                         </div>
                     </div>
-                    <div class = "form-row">
-                        <div class = "form-group col-sm-4">
-                            <label for="date" class = "col-md-2 col-form-label">Survey date</label>
-                            <input type="date" id="date" name = "date"/>
+                    <div class="form-group row">
+                        <label for="last_name" class = "col-md-2 col-form-label">Last name</label>
+                        <div class = "col-md-10">
+                            <input class = "form-control" id="last_name" name = "last_name" value="{{request.user.last_name}}"/>
+                        </div>
+                    </div>                
+                    <div class = "form-group row">
+                        <label for="email" class = "col-md-2 col-form-label">Email</label>
+                        <div class = "col-md-10">
+                            <input class = "form-control" type="email" id="email" name = "email" value="{{request.user.email}}"/>
                         </div>
                     </div>
-                    <div class = "form-row">
-                        <div class = "form-group col-sm-4">
-                            <label for="population" class = "col-md-2 col-form-label">Target population</label>
-                            <input type="number" id="population" name = "population"/>
+                    <div class = "form-group row">
+                        <label for="phone_no" class = "col-md-2 col-form-label">Phone number</label>
+                        <div class = "col-md-10">
+                            <input class = "form-control" type="tel" id="phone_no" name = "phone_no" value="{{phone_no.phone_no}}" />
                         </div>
                     </div>
-                    <div class = "form-row">
+                    <div class = "form-group row">
+                        <label for="role" class = "col-md-2 col-form-label">Role</label>
+                        <div class = "col-md-10">
+                            <input class = "form-control" id="role" name = "role" value="{{person.role}}" readonly/>
+                        </div>
+                    </div>
+                    <div class = "form-group row">
                         <div class = "col-md-10 offset-md-2">  
                             <button type = "submit" class = "btn btn-primary">
-                                Create
+                                Edit
                             </button>
                         </div>
                     </div>
@@ -112,5 +122,4 @@
             </div>
         </div>
     </div>
--->
 {% endblock %}

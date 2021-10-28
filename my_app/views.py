@@ -8,16 +8,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, AnonymousUser
 from django.conf import settings
 from django.core.mail import send_mail
-
+ 
 # Create your views here.
 def index_view(request, *args, **kwargs):
-#	print(request)
-#	obj = Person.objects.get(condition)
-#	return HttpResponse("<h1>Hello World</h>")
 	return render(request, "index.html", {})
-
-#def permissible_emissions_view(request, *args, **kwargs):
-#	obj = Emission_parameters.object.get
 
 def login_view(request):
 	if request.method == 'POST':
@@ -85,31 +79,43 @@ def edit_view(request):
  
 	return render(request,'profile.html', {'user_form':user_form}) #on page where info is visible make it updateable
 """
-"""
+
 @login_required
 def edit_view(request):
 	person = Person.objects.get(user = request.user)
-
+	try:
+		phone_no = Phone_no.objects.get(person = person)
+	except:
+		phone_no = int()
 	if request.method == 'POST':
-		user_form = user_edit_form(instance = request.user,data = request.POST)
-		profile_form = profile_edit_form(instance = person,data = request.POST, files = request.FILES)
-		contact_form = contact_edit_form(instance = person,data = request.POST, files = request.FILES)
+		user_data = {
+			'first_name': request.POST['first_name'],
+			'last_name': request.POST['last_name'],
+			'email': request.POST['email']
+		}
 
-		if user_form.is_valid() and profile_form.is_valid() and contact_form.is_valid():
+		contact_data = {
+			'phone_no': request.POST['phone_no']
+		}
+
+		user_form = user_edit_form(instance = request.user,data = user_data)
+		contact_form = contact_edit_form(instance = request.user,data = contact_data)
+
+		if user_form.is_valid() and contact_form.is_valid():
+			con_cln = contact_form.cleaned_data
+			phone_no = Phone_no(person = person, phone_no = con_cln['phone_no'])
+			phone_no.save()
+
 			user_form.save()
-			profile_form.save()
-			contact_form.save()
 
-			return render(request,'home.html',{'user':user,'person':person})
+		return render(request,'profile.html',{'person': person, 'phone_no':phone_no})
 
 	else:
 		user_form = user_edit_form(instance = request.user)
-		profile_form = profile_edit_form(instance = person)
-		contact_form = contact_edit_form(instance = person)
+		contact_form = contact_edit_form(instance = request.user)
+	
+	return render(request,'profile.html',{'person': person, 'phone_no':phone_no})
 
-	return render(request,'profile.html',{'user': request.user, 'person': person, 'user_form':user_form,
-		                                  'profile_form':profile_form, 'contact_form': contact_form})
-"""
 @login_required
 def home_view(request):
 	user = request.user
