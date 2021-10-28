@@ -48,6 +48,6 @@ class Session(models.Model):
 	date = models.DateField()
 
 class Company_emissions(models.Model):
-	session = models.ManyToManyField(Session)
+	session = models.ForeignKey(Session, on_delete=models.CASCADE)
 	substance = models.ForeignKey(Emission_parameters, on_delete = models.CASCADE)
 	value = models.IntegerField()

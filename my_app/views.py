@@ -157,12 +157,6 @@ def permissible_emissions_view(request):
 
 
 @login_required
-def profile_view(request):
-	user = request.user
-	person = Person.objects.get(user = user)
-	return render(request, 'profile.html', {'user':user, 'person': person})
-
-@login_required
 def lodge_complaint_view(request):
 	if request.method == 'POST':
 		user_form = lodge_complaint_form(instance = request.user, data = request.POST)
@@ -247,24 +241,9 @@ def track_complaint_view(request):
 	person = Person.objects.get(user = user)
 	complaints = Complaints.objects.filter(person = person).order_by('-last_update')
 	return render(request,'track_complaint.html',{'complaints':complaints})
-"""
-@login_required
-def track_complaint2_view(request, complaint_id):
-	complaint = get_object_or_404(Complaints, pk = complaint_id)
-	return render(request,'track_complaint.html',{'complaint':complaint})
-"""
-""" 
+
 @login_required
 def audit_complaints_view(request):
-	#add a feedback column for each complaint (not visible to complainer)
-	#this will be edited by auditor and a mail with feedback sent to complainer
-	complaints = Complaints.objects.all().order_by('last_update')
-	return render(request,'audit_complaints.html',{'complaints':complaints})
-""" 
-@login_required
-def audit_complaints_view(request):
-	#add a feedback column for each complaint (not visible to complainer)
-	#this will be edited by auditor and a mail with feedback sent to complainer
 	complaints = Complaints.objects.all().order_by('-last_update')
 	return render(request,'audit_complaints.html',{'complaints':complaints})
 
@@ -324,6 +303,7 @@ def audit_emissions_view(request):
 	session_sub = dict()
 	session_dt = dict()
 	for company_emission in company_emissions:
+		print(company_emission.substance.substance_name)
 		if session_sub[company_emission.session.id] is None:
 			session_sub[company_emission.session.id] = [(company_emission.substance.substance_name, company_emission.value,
 			                                            Emission_parameters.objects.get(substance_name = company_emission.substance.substance_name).min_permissible_limit,
