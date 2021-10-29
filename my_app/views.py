@@ -184,15 +184,54 @@ def select_session_page(request):
 			return render(request, "401.html", status=401)
 	except:
 		return render(request, "401.html", status=401)
-	context = {"sessions": Session.objects.filter(supervisor=Person.objects.get(user=request.user))}
 	if request.method == 'POST':
 		user_form = select_session_form(instance=request.user, data=request.POST)
 		if user_form.is_valid():
 			cleaned_data = user_form.cleaned_data
 			session=cleaned_data['session']
 			return enter_emissions_page(request, session.id)
+	try:
+		context = {"sessions": Session.objects.filter(supervisor=Person.objects.get(user=request.user))}
+	except:
+		return render(request, "404.html", status=404)
 	return render(request, "select_session.html", context)
 
+@login_required
+def enter_emissions_page(request, session_id):
+	try:
+		if Person.objects.get(user=request.user).role != "Supervisor":
+			return render(request, "401.html", status=401)
+	except:
+		return render(request, "401.html", status=401)
+	if request.method == 'POST':
+		user_form = enter_emissions_form(instance=request.user, data=request.POST)
+		if user_form.is_valid():
+			cleaned_data = user_form.cleaned_data
+			substance = cleaned_data['substance']
+			value = cleaned_data['value']
+			obj = Company_emissions(session=Session.objects.get(id=session_id), substance=substance, value=value)
+			obj.save()
+	try:
+		filled = Company_emissions.objects.filter(session=Session.objects.get(id=session_id))
+	except:
+		return render(request, "404.html", status=404)
+	filled_attributes=list()
+	attributes_filled_substances = list()
+	for row in filled:
+		filled_attributes.append(row)
+		attributes_filled_substances.append(row.substance)
+	lefts = Emission_parameters.objects.all()
+	attributes_left = list()
+	for attr in lefts:
+		if attr in attributes_filled_substances:
+			continue
+		attributes_left.append(attr)
+	context = {
+		"session_id": [session_id],
+		"attributes_left": attributes_left,
+		"attributes_filled": filled_attributes,
+	}
+	return render(request, "enter_emissions.html", context)
 
 @login_required
 def track_complaint_view(request):
@@ -302,7 +341,6 @@ def new_survey_view(request):
 			obj = Survey_metadata(auditor = person, date = data['date'], population = data['population'])
 			obj.save()
 			return render(request,'survey_created.html',{'obj':obj, 'pers':pers})
-
 	else:
 		user_form = new_survey_form(instance = request.user)
 
@@ -334,39 +372,6 @@ def survey_form_view(request, survey_id):
 		user_form = survey_form_form(instance = request.user)
 
 	return render(request,'survey_form.html', {'user_form':user_form, 'survey_id':survey_id})
-
-def enter_emissions_page(request, session_id):
-	try:
-		if Person.objects.get(user=request.user).role != "Supervisor":
-			return render(request, "401.html", status=401)
-	except:
-		return render(request, "401.html", status=401)
-	if request.method == 'POST':
-		user_form = enter_emissions_form(instance=request.user, data=request.POST)
-		if user_form.is_valid():
-			cleaned_data = user_form.cleaned_data
-			substance = cleaned_data['substance']
-			value = cleaned_data['value']
-			obj = Company_emissions(session=Session.objects.get(id=session_id), substance=substance, value=value)
-			obj.save()
-	filled = Company_emissions.objects.filter(session=Session.objects.get(id=session_id))
-	filled_attributes=list()
-	attributes_filled_substances = list()
-	for row in filled:
-		filled_attributes.append(row)
-		attributes_filled_substances.append(row.substance)
-	lefts = Emission_parameters.objects.all()
-	attributes_left = list()
-	for attr in lefts:
-		if attr in attributes_filled_substances:
-			continue
-		attributes_left.append(attr)
-	context = {
-		"session_id": [session_id],
-		"attributes_left": attributes_left,
-		"attributes_filled": filled_attributes,
-	}
-	return render(request, "enter_emissions.html", context)
 
 """
 @login_required
