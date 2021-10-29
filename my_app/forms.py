@@ -6,7 +6,7 @@ class login_form(forms.Form):
 	username = forms.CharField()               #EmailField()
 	password = forms.CharField(widget = forms.PasswordInput)
 
- 
+
 class user_registration_form(forms.ModelForm):
 	password = forms.CharField(label ='Password',widget = forms.PasswordInput)
 	password2 = forms.CharField(label = 'Confirm Password', widget = forms.PasswordInput)
@@ -40,8 +40,12 @@ class enter_emissions_form(forms.ModelForm):
 	class Meta:
 		# TODO: Modify the form appropriatly
 		model = Company_emissions
-		fields = ('substance', 'value')
+		fields = 'substance', 'value'
 
+class select_session_form(forms.ModelForm):
+	class Meta:
+		model = Company_emissions
+		fields = ('session',)
 
 class survey_form_form(forms.ModelForm):
 	class Meta:

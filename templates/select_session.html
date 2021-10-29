@@ -5,11 +5,11 @@
     <div class="row-container display-1">
         Select Session
     </div>
-    <form action="{% url 'enter_emissions' %}" method="POST">
+    <form action="{% url 'select_session' %}" method="POST">
         {% csrf_token %}
         <div class="form-group row">
             <label for="session" class="col-form-label col-md-4">ID and Date of session </label>
-            <select class="select-attribute col-md-8 form-control" name="substance">
+            <select class="select-attribute col-md-8 form-control" name="session">
             {% for session in sessions %}
                 <option value="{{session.id}}">ID: {{session.id}} - Date: {{session.date}}</option>
             {% endfor %}

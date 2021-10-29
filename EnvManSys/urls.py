@@ -3,7 +3,7 @@
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
 Examples:
-Function views 
+Function views
     1. Add an import:  from my_app import views
     2. Add a URL to urlpatterns:  path('', views.home, name='home')
 Class-based views
@@ -24,7 +24,7 @@ urlpatterns = [
 #    path('survey_data/<int:survey_id>/',views.survey_data_view, name = 'survey_data'),
 #    path('my_app/',include('my_app.urls')),
 
-    path('admin/', admin.site.urls), 
+    path('admin/', admin.site.urls),
     path('', views.index_view, name = 'index'),
     path('permissible_emissions/', views.permissible_emissions_view, name = 'permissible_emissions'),
 #    path('profile/',views.profile_view, name = 'profile'),
@@ -32,7 +32,7 @@ urlpatterns = [
     path('home/', views.home_view, name = 'home'),
     path('lodge_complaint/', views.lodge_complaint_view, name = 'lodge_complaint'),
     path('select_session/', views.select_session_page, name = 'select_session'),
-    path('emissions/', views.enter_emissions, name = 'enter_emissions'),
+    path('enter_emissions/<int:session_id>', views.enter_emissions_page, name = 'enter_emissions'),
     path('track_complaint/', views.track_complaint_view, name = 'track_complaint'),
     path('audit_complaints/', views.audit_complaints_view, name = 'audit_complaints'),
     path('audit_complaints/<int:complaint_id>', views.complaint_feedback_view, name = 'complaint_feedback'),
@@ -42,7 +42,7 @@ urlpatterns = [
     path('surveys/', views.surveys_view, name = 'surveys'),
     path('new_survey/', views.new_survey_view, name = 'new_survey'),
     path('surveys/<int:survey_id>/survey_form/', views.survey_form_view, name = 'survey_form'),
-  
+
     #AuthenticationUrl's
     path('login/', views.login_view, name = 'login'),
     path('register/', views.register_view, name = 'register'),
@@ -52,7 +52,7 @@ urlpatterns = [
         ,name='password_change'),
     path('password_change/done/',auth_views.PasswordChangeDoneView.as_view(),name = 'password_change_done'),
 
- 
+
     #PasswordReset
 
     path('password-reset/done/', auth_views.PasswordResetDoneView.as_view(
@@ -61,6 +61,5 @@ urlpatterns = [
         template_name="password-reset/password_reset_confirm.html"), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(
         template_name='password-reset/password_reset_complete.html'), name='password_reset_complete'),
-     path('password-reset/', views.password_reset_view, name="password_reset"),      
+     path('password-reset/', views.password_reset_view, name="password_reset"),
 ]
-
