@@ -21,7 +21,7 @@
                     <li class="nav-item">
                     	<a class="nav-link" href="/permissible_emissions">MPE</a>
                     </li>
-                    {% if pers.role == "Surveyer" %}
+                    {% if pers.role == "Surveyor" %}
                         <li class="nav-item active">
                         	<a class="nav-link" href="/surveys">Surveys</a>
                         </li>
@@ -51,7 +51,7 @@
 {% endblock %}
  
 {% block content_2 %}
-    <div class ="container">
+    <div class ="container" style="min-height:79vh;">
         <div class = "row row-content">
             <div class="col-12">
                <h2>Create Survey</h2>
@@ -59,22 +59,22 @@
             <div class="col-12 col-md-9">
                 <form action = "{% url 'new_survey' %}" type = "POST" method = "POST">
                     {% csrf_token %}
-                    <div class = "form-row">
-                        <div class="form-group col-sm-10">
-                            <label for="auditor" class = "col-md-4 col-form-label" title = "Enter email id of auditor who will be auditing the survey">Auditor's Email</label>
-                            <input type="email" id="auditor" name = "auditor" placeholder="name@email.com"/>
+                    <div class = "form-group row">
+                        <label for="auditor" class = "col-md-2 col-form-label" title = "Enter email id of auditor who will be auditing the survey">Auditor's Email</label>
+                        <div class="col-md-8">
+                            <input type="email" id="auditor" class="form-control" name = "auditor" placeholder="name@email.com"/ required>
                         </div>
                     </div>
-                    <div class = "form-row">
-                        <div class = "form-group col-sm-10">
-                            <label for="date" class = "col-md-4 col-form-label">Survey date</label>
-                            <input type="date" id="date" name = "date"/>
+                    <div class = "form-group row">
+                        <label for="date" class = "col-md-2 col-form-label">Survey date</label>
+                        <div class="col-md-8">
+                            <input type="date" class="form-control" id="date" name = "date" required />
                         </div>
                     </div>
-                    <div class = "form-row">
-                        <div class = "form-group col-sm-10">
-                            <label for="population" class = "col-md-4 col-form-label">Target population</label>
-                            <input type="number" id="population" name = "population"/>
+                    <div class = "form-group row">
+                        <label for="population" class = "col-md-2 col-form-label">Target population</label>
+                        <div class="col-md-8">
+                            <input type="number" id="population" class="form-control" name = "population" required />
                         </div>
                     </div>
                     <div class = "form-row">

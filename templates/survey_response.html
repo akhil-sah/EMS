@@ -45,15 +45,12 @@
 {% endblock %}
  
 {% block content_2 %}
-    <div class ="container">
+    <div class ="container" style="min-height:79vh;">
         <div class = "row row-content">
             <div class="col-12">
-               <h2>Survey reponses for survey {{survey_id}}</h2>
+               <h2>Survey responses for survey {{survey_id}}</h2>
             </div>
-        </div>
-        <div class ="row row-content">
             <div class = "col-12 col-sm-12">
-                <h2>Responses</h2>
                 <div class = "table-responsive">
                     <table class = "table table-striped">
                         <thead class = "thead-dark">
@@ -74,6 +71,7 @@
                                         <div class = "form-row">
                                             <div class = "form-group">
                                                 <label for = "status" class = "col-form-label" style = "display: block;"><strong>{{response.status}}</strong></label>
+                                                {% if response.status != "Addressed" %}
                                                 <div class = "btn-group btn-group-toggle ml-auto" data-toggle = "buttons">
                                                     <label class = "btn btn-success">
                                                         <input type = "radio" id = "addressed" name = "status" autocomplete="off" value="Addressed">Addressed
@@ -82,14 +80,18 @@
                                                         <input type = "radio" id = "irrelevant" name = "status" autocomplete="off" value="Irrelevant">Irrelevant
                                                     </label>
                                                 </div>
+                                                {% endif %}        
                                             </div>
                                         </div>
+                                        {% if response.status != "Addressed" %}
                                         <div class = "form-row">
                                             <div class = "form-group">
                                                 <button type = "submit" class = "btn btn-primary">
                                                     Update status
                                                 </button>
                                             </div>
+                                        </div>
+                                        {% endif %}
                                         </div>
                                     </form>
                                 </td>

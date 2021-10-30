@@ -1,43 +1,105 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+{% block add_files %}
+<link rel = "stylesheet" href= "{% static 'css/complaints.css' %}">
+{% endblock %}
+
+{% block content %}
+    <nav class = "navbar navbar-dark navbar-expand-sm">
+        <div class = "container">
+            <button class = "navbar-toggler" type = "button" data-toggle = "collapse" data-target = "#Navbar">
+                <span class = "navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand mr-auto" href="/home">EMS</a>
+            <div class = "collapse navbar-collapse" id = "Navbar">
+                <ul class = "navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/permissible_emissions">MPE</a>
+                    </li>
+                    {% if person.role == "Auditor" %}
+                        <li class="nav-item dropdown active">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Audit
+                                <span class="caret"></span></a>
+                            <ul class="dropdown-menu" style = "background-color: #31b760;">
+                              <li class = "nav-item" ><a class = "nav-link" href="/audit_emissions">Audit Emissions</a></li>
+                              <li class = "nav-item"><a class = "nav-link" href="/audit_surveys">Audit Surveys</a></li>
+                              <li class = "nav-item" ><a class = "nav-link" href="/audit_complaints">Audit Complaints</a></li>
+                            </ul>
+                        </li>
+                    {% elif person.role == "Supervisor" %}
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{% url 'select_session' %}">Emission Data</a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">My Profile
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu" style = "background-color: #31b760;">
+                          <li class = "nav-item" ><a class = "nav-link" href="/profile">My Profile</a></li>
+                          <li class = "nav-item"><a class = "nav-link" href="{% url 'logout' %}">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %} 
+
 {% block content_2 %}
-<div class="container">
-  <div class="row-container display-1">
-    Emission Data
-  </div>
-  {% for sess in session_id %}
-  <form action="{% url 'enter_emissions' sess %}" method="POST">
-  {% endfor %}
-    {% csrf_token %}
-    <div class="form-group row">
-      <label for="attribute" class="col-form-label col-md-3">Name of Attribute</label>
-      <select class="select-attribute col-md-3 form-control" name="substance">
-        {% for attribute in attributes_left %}
-          <option value="{{attribute.id}}">{{attribute.substance_name}} - {{attribute.substance_type}}</option>
-        {% endfor %}
-      </select>
-      <label for="value" class="col-form-label col-md-3">Value</label>
-      <input type="numeric" name="value" value="" class="form-control col-md-3">
-    </div>
-    <div class="form-group row">
-      <button type="submit" name="button" value="submit" class="btn btn-primary">Submit</button>
-    </div>
-  </form>
-    <table class="table table-striped">
-    <thead class="thead-dark">
-      <th>#</th>
-      <th>Attribute</th>
-      <th>Values</th>
-    </thead>
-    <tbody class="">
-      {% for attr in attributes_filled %}
-        <tr>
-          <th>{{forloop.counter}}</th>
-          <td>{{attr.substance.substance_name}}</td>
-          <td>{{attr.value}}</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<div class = "container" style="min-height:79vh;">
+    <div class="row row-content">
+       <div class="col-12">
+          <h2>Emission data</h2>
+       </div> 
+        <div class="col-12">
+            {% for sess in session_id %}
+            <form action="{% url 'update_emissions' sess %}" method="POST">
+            {% endfor %}
+                {% csrf_token %}
+                <div class="form-group row">
+                    <label for="attribute" class="col-form-label col-md-2">Name of Attribute</label>
+                    <select class="select-attribute col-md-3 form-control" name="substance">
+                    {% for attribute in attributes_left %}
+                        <option value="{{attribute.id}}">{{attribute.substance_name}} - {{attribute.substance_type}}</option>
+                    {% endfor %}
+                    </select>
+                    <label class="col-form-label col-md-1"> </label>
+                    <label for="value" class="col-form-label col-md-1">Value</label>
+                    <input type="numeric" name="value" value="" class="form-control col-md-3">
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-10">
+                        <button type="submit" name="button" value="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-12 col-md-10">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                        <th>#</th>
+                        <th>Attribute</th>
+                        <th>Values</th>
+                    </thead>
+                    <tbody class="">
+                        {% for attr in attributes_filled %}
+                        <tr>
+                            <th>{{forloop.counter}}</th>
+                            <td>{{attr.substance.substance_name}}</td>
+                            <td>{{attr.value}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+   </div>
 </div>
+
 {% endblock %}

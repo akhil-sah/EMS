@@ -45,57 +45,59 @@
 {% endblock %}
 
 {% block content_2 %}
-    <div class ="container">
-        <div class = "row row-content">
-            <h1>Emissions</h1>
-            <div class = "col-12 col-sm-12">
-                <p>about surveys (what is covered in servey and all)</p>
-            </div>
-        </div>
+    <div class ="container" style="min-height:79vh;">
         <div class = "row row-content">
             <div class = "col-12 col-sm-12">
                 <h2>Session list</h2>
-                <div class = "accordion">
-                    {% for session_id, val_list in session_sub.item %}
-                        <div class = "card">
-                            <div class = "card-header" role = "tab" id = "peterhead">
-                                <h3 class = "mb-0">
-                                    <a data-toggle = "collapse" data-target = "#{{session_id}}">
-                                        session_id <small>session_dt[session_id]</small>
-                                    </a>
-                                </h3>
+                <div class="accordion md-accordion accordion-blocks" id="accordionEx78" role="tablist"aria-multiselectable="true">
+                    {% for session_id, val_list in session_sub.items %}
+                        <div class = "card mb-2">
+                            <div class = "card-header" role = "tab" id = "session{{session_id}}">
+                                <a data-toggle="collapse" data-parent="#accordionEx78" href="#{{session_id}}" aria-expanded="true" aria-controls="session_id" style="text-decoration: none;">
+                                <h5 class="mt-1 mb-0">
+                                  <span> Session {{session_id}}: <small>{{val_list.0.4}}</small></span>
+                                  <span id = "arrow{{session_id}}" class="fa fa-angle-down float-right"></span>
+                                </h5>
+                              </a>
                             </div>
                         </div>
-                        <div class = "collapse show" id = "{{session_id}}" data-parent = "#accordion">
+                        <div class = "collapse" id = "{{session_id}}" role="tabpanel" aria-labelledby="session{{session_id}}"data-parent="#accordionEx78">
                             <div class = "card-body">
-                                <div class = "table-responsive">
-                                    <table class = "table table-striped">
-                                        <thead class = "thead-dark">
-                                            <tr>
-                                                <th>Substance name</th>
-                                                <th>Permissible range (min/max)</th>
-                                                <th>Actual Value</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% if val_list.1 > val_list.3 or val_list.1 < val_list.2 %}
-                                            <tr style = "color: red;"><!-- add a modal for adding feedback and changing status-->
-                                                <th>{{val_list.0}}</th>
-                                                <td>{{val_list.2}} / {{val_list.3}}</td>
-                                                <td>{{val_list.1}}</td>    
-                                                <td>Out of range</td>
-                                            </tr>
-                                        {% else %}
-                                            <tr style = "color: green;"><!-- add a modal for adding feedback and changing status-->
-                                                <th>{{val_list.0}}</th>
-                                                <td>{{val_list.2}} / {{val_list.3}}</td>
-                                                <td>{{val_list.1}}</td>    
-                                                <td>Safe</td>
-                                            </tr>
-                                        {% endif %}                                        
-                                        </tbody>
-                                    </table>
+                                <div class="mb-4">
+                                    <div class = "table-responsive">
+                                        <table class = "table table-striped">
+                                            <thead class = "thead-dark">
+                                                <tr>
+                                                    <th>Substance name</th>
+                                                    <th>Permissible range (min/max)</th>
+                                                    <th>Actual Value</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for val in val_list %}
+                                                    {% if val.1 > val.3 or val.1 < val.2 %}
+                                                        <tr style = "color: red;"><!-- add a modal for adding feedback and changing status-->
+                                                            <th>{{val.0}}</th>
+                                                            <td>{{val.2}} / {{val.3}}</td>
+                                                            <td>{{val.1}}</td>    
+                                                            <td>Out of range</td>
+                                                        </tr>
+                                                    {% else %}
+                                                        <tr style = "color: green;"><!-- add a modal for adding feedback and changing status-->
+                                                            <th>{{val.0}}</th>
+                                                            <td>{{val.2}} / {{val.3}}</td>
+                                                            <td>{{val.1}}</td>    
+                                                            <td>Safe</td>
+                                                        </tr>
+                                                    {% endif %}
+                                                {% endfor %}                                        
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-12">
+                                        <a role="button" class="btn btn-primary float-right" href = "{% url 'update_emissions' session_id %}">Update</a>
+                                    </div>
                                 </div>
                             </div>                            
                         </div>

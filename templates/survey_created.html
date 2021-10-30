@@ -21,7 +21,7 @@
                     <li class="nav-item">
                     	<a class="nav-link" href="/permissible_emissions">MPE</a>
                     </li>
-                    {% if pers.role == "Surveyer" %}
+                    {% if pers.role == "Surveyor" %}
                         <li class="nav-item active">
                             <a class="nav-link" href="/surveys">Surveys</a>
                         </li>
@@ -51,12 +51,12 @@
 {% endblock %}
 
 {% block content_2 %}
-    <div class ="container">
+    <div class ="container" style="min-height:79vh;">
         <div class = "row row-content">
             <h1>Survey created</h1>
             <div class = "col-12 col-sm-12">
                 <p>The survey was created successfully. The survey ID for this survey is {{obj.id}}.</p>
-                {% if pers.role == "Surveyer" %}
+                {% if pers.role == "Surveyor" %}
                 <p>Click <a href = "{% url 'survey_form' obj.id %}">here</a> to enter survey responses.</p>
                 {% endif %}
             </div>

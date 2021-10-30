@@ -22,7 +22,7 @@
                     	<a class="nav-link" href="/permissible_emissions">MPE</a>
                     </li>
                     <li class="nav-item active">
-                    	<a class="nav-link" href="#">Surveys</a>
+                    	<a class="nav-link" href="/surveys">Surveys</a>
                     </li>
 		      		<li class="nav-item dropdown">
 		        		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">My Profile
@@ -39,10 +39,11 @@
 {% endblock %}
 
 {% block content_2 %}
-<div class = "container" style="height: 100vh;">
+<div class = "container" style="min-height:79vh;">
     <div class="row row-content justify-content-center align-items-center">
        <div class="col-12">
           <h2>Response recorded successfully</h2>
+            <p>Click <a href = "{% url 'survey_form' survey_id %}">here</a> to enter another survey response.</p>
        </div>
    </div>
 </div>

@@ -45,16 +45,15 @@
 {% endblock %} 
 
 {% block content_2 %} 
-    <div class ="container"> 
+    <div class ="container" style="min-height:79vh;"> 
         <div class = "row row-content">
-            <h1>Surveys</h1>
-            <div class = "col-12 col-sm-12">
-                <p>about surveys (what is covered in servey and all)</p>
+            <div class="col-12 col-sm-10">
+                <h2>Surveys</h2>
             </div>
-        </div>
-        <div class ="row row-content">
+            <div class = "col-12 col-sm-2">
+                <a class="btn btn-primary" href="/new_survey" role="button">Create new survey &nbsp;<span class = "fa fa-plus"></span></a> 
+            </div>
             <div class = "col-12 col-sm-10">
-                <h2>Survey list</h2>
                 <div class = "table-responsive">
                     <table class = "table table-striped">
                         <thead class = "thead-dark">
@@ -71,7 +70,7 @@
                         {% for survey in surveys %} 
                             <tr>
                                 <th>
-                                    <a style = "text-decoration: none;" href = "{% url 'survey_response' survey_id=survey.id response_id=0 %}">{{survey.id}} <span class = "fa fa-link"></span></a>
+                                    <a role="button" class="btn btn-primary btn-block" href = "{% url 'survey_response' survey_id=survey.id response_id=0 %}">{{survey.id}}</a>
                                 </th>
                                 <td>{{survey.date}}</td>
                                 <td>{{survey.population}}</td>
@@ -83,9 +82,6 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-            <div class = "col-12 col-sm-2">
-                <a class="btn btn-primary" href="/new_survey" role="button">Create new survey &nbsp;<span class = "fa fa-plus"></span></a> 
             </div>
         </div>
     </div>

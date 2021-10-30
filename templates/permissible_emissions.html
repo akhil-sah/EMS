@@ -28,7 +28,7 @@
 		                    </li>
 				      	{% elif person.role == "Supervisor" %}
 		                    <li class="nav-item">
-				        		<a class="nav-link" href="#">Emission Data</a>
+				        		<a class="nav-link" href="{% url 'select_session' %}">Emission Data</a>
 				      		</li>
 				      	{% elif person.role == "Surveyor" %}
 				      		<li class="nav-item">
@@ -36,10 +36,7 @@
 			      			</li>
 			      		{% else %}
 		                    <li class="nav-item">
-		                    	<a class="nav-link" href="#">Articles</a>
-		                    </li>
-		                    <li class="nav-item">
-		                    	<a class="nav-link" href="/home">About</a>
+		                    	<a class="nav-link" href="/home/#about">About</a>
 		                    </li>
 			      			<li class="nav-item dropdown">
 				        		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Complaints
@@ -78,10 +75,7 @@
 	                    	<a class="nav-link" href="/permissible_emissions">MPE</a>
 	                    </li>
 	                    <li class="nav-item">
-	                    	<a class="nav-link" href="#">Articles</a>
-	                    </li>
-	                    <li class="nav-item">
-	                    	<a class="nav-link" href="/">About</a>
+	                    	<a class="nav-link" href="/#about">About</a>
 	                    </li>
 	                    <li class="nav-item">
 	                    	<a class = "nav-link" href="{% url 'login' %}">Login</a>
@@ -96,13 +90,19 @@
 {% block content_2 %}
     <div class ="container">
     	<div class = "row row-content">
-      		<h1>Maximum Permissible Limits</h1>
-      		<div class = "col-12 col-sm-12">
-  				<p>About permissible limits and all</p>
+    		<div class="col-12 col-sm-10">
+      			<h1>Maximum Permissible Limits</h1>
+      		</div>
+      		<div class = "col-12 col-sm-10">
+  				<p>
+  					To control the quality of the environment is possible only one way - the introduction of MPE (maximum permissible emissions) for sources of pollution and strict enforcement of these regulations. According to scientific-technical standard MPE established the conditions under which content in the surface layer air pollutants from the set of sources should not be higher standards that are needed for the population, as well as the flora and fauna of the area.
+  				</p>
+  			</div>
+  			<div class="col-12 col-sm-3">
   			</div>
   		</div>
   		<div class ="row row-content">
-  			<div class = "col-12 col-sm-9">
+  			<div class = "col-12 col-sm-10">
                <h2>Permissible Emission limits</h2>
                <div class = "table-responsive">
                    <table class = "table table-striped">

@@ -2,13 +2,14 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.urls import reverse
 from django.shortcuts import render, redirect
 from .models import *
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib import messages
 from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, AnonymousUser
 from django.conf import settings
 from django.core.mail import send_mail, BadHeaderError
-from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.forms import PasswordResetForm, PasswordChangeForm
 from django.db.models.query_utils import Q
 from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
@@ -17,7 +18,68 @@ from django.template.loader import render_to_string
 
 # Create your views here.
 def index_view(request, *args, **kwargs):
-	return render(request, "index.html", {})
+	return render(request, "base.html", {})
+
+def permissible_emissions_view(request):
+	emissions = Emission_parameters.objects.all()
+	if isinstance(request.user, AnonymousUser):
+		person = Person()
+	else:
+		person = Person.objects.get(user = request.user)
+	return render(request, 'permissible_emissions.html', {'emissions':emissions, 'person':person})
+
+@login_required
+def edit_view(request):
+	person = Person.objects.get(user = request.user)
+	try:
+		phone_no = Phone_no.objects.get(person = person).phone_no
+	except:
+		phone_no = ""
+	if request.method == 'POST':
+		user_data = {
+			'first_name': request.POST['first_name'],
+			'last_name': request.POST['last_name'],
+			'email': request.POST['email']
+		}
+
+		contact_data = {
+			'phone_no': request.POST['phone_no'], 
+			'person': person
+		}
+
+		user_form = user_edit_form(instance = request.user,data = user_data)
+		contact_form = contact_edit_form(instance = request.user,data = contact_data)
+
+		if user_form.is_valid() and contact_form.is_valid():
+			con_cln = contact_form.cleaned_data
+			if phone_no == "":
+				phn = Phone_no(phone_no=contact_data['phone_no'], person=person)
+				phn.save()
+			else:
+				phn = Phone_no.objects.filter(person=person)
+				phn.update(phone_no=contact_data['phone_no'])
+				
+			user_form.save()
+		return render(request,'profile.html',{'person': person, 'phone_no':phone_no})
+
+	else:
+		user_form = user_edit_form(instance = request.user)
+		contact_form = contact_edit_form(instance = request.user)
+
+	return render(request,'profile.html',{'person': person, 'phone_no':phone_no})
+
+@login_required
+def home_view(request):
+	user = request.user
+	person = Person.objects.get(user = user)
+	return render(request,'home.html',{'user':user,'person':person})      
+
+
+#============ Authentication ===============#
+#--- Login
+#--- Logout
+#--- Password change/reset
+#--- Register
 
 def login_view(request):
 	if request.method == 'POST':
@@ -30,8 +92,7 @@ def login_view(request):
 				if user.is_active:
 					login(request,user)
 					person = Person.objects.get(user = user)
-					# print(person.role)
-					return render(request,'home.html',{'user':user, 'person':person})
+					return redirect('home')
 
 				else:
 					return HttpResponse("Disabled Account")
@@ -50,22 +111,23 @@ def logout_view(request):
 	logout(request)
 	return redirect('index')
 
-def register_view(request):
-	if request.method == 'POST':
-		user_form = user_registration_form(request.POST)
-		if user_form.is_valid():
-			#Create new user object....dont save now
-			new_user = user_form.save(commit = False)
-			#Set chosen Password
-			new_user.set_password(user_form.cleaned_data['password'])
-			#Save the user object
-			new_user.save()
-			person = Person.objects.create(user = new_user)
-			person.save()
-			return render(request,'registered.html',{'new_user':new_user})
-	else:
-		user_form = user_registration_form()
-	return render(request, 'register.html', {'user_form':user_form})
+@login_required
+def password_change_view(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            return redirect('password_change_done')
+    else:
+        form = PasswordChangeForm(request.user)
+    person = Person.objects.get(user=request.user)
+    return render(request, 'password_change_form.html', {'person': person, 'form':form})
+
+@login_required
+def password_change_done_view(request):
+	person = Person.objects.get(user = request.user)
+	return render(request,'password_change_done.html', {'person': person})
 
 def password_reset_view(request):
 	if request.method == "POST":
@@ -73,9 +135,8 @@ def password_reset_view(request):
 		if password_reset_form.is_valid():
 			data = password_reset_form.cleaned_data['email']
 			associated_users = User.objects.filter(Q(email=data))
-			print(associated_users)
+			
 			if associated_users.exists():
-				print(2)
 				for user in associated_users:
 					subject = "Password Reset Requested"
 					email_template_name = "password-reset/password_reset_email.txt"
@@ -89,75 +150,41 @@ def password_reset_view(request):
 					'protocol': 'http',
 					}
 					email = render_to_string(email_template_name, c)
+					
 					try:
 						send_mail(subject, email, settings.EMAIL_HOST_USER , [user.email], fail_silently=False)
 					except BadHeaderError:
 						return HttpResponse('Invalid header found.')
 					return redirect ("/password-reset/done/")
+	
 	password_reset_form = PasswordResetForm()
-	print('here')
 	return render(request=request, template_name="password-reset/password_reset_form.html", context={"password_reset_form":password_reset_form})
 
-@login_required
-def edit_view(request):
-	person = Person.objects.get(user = request.user)
-	try:
-		phone_no = Phone_no.objects.get(person = person)
-	except:
-		phone_no = int()
+def register_view(request):
 	if request.method == 'POST':
-		user_data = {
-			'first_name': request.POST['first_name'],
-			'last_name': request.POST['last_name'],
-			'email': request.POST['email']
-		}
-
-		contact_data = {
-			'phone_no': request.POST['phone_no']
-		}
-
-		user_form = user_edit_form(instance = request.user,data = user_data)
-		contact_form = contact_edit_form(instance = request.user,data = contact_data)
-
-		if user_form.is_valid() and contact_form.is_valid():
-			con_cln = contact_form.cleaned_data
-			phone_no = Phone_no(person = person, phone_no = con_cln['phone_no'])
-			phone_no.save()
-
-			user_form.save()
-
-		return render(request,'profile.html',{'person': person, 'phone_no':phone_no})
-
+		user_form = user_registration_form(request.POST)
+		if user_form.is_valid():
+			new_user = user_form.save(commit = False)
+			new_user.set_password(user_form.cleaned_data['password'])
+			new_user.save()
+			
+			person = Person.objects.create(user = new_user)
+			person.save()
+			return render(request,'registered.html',{'new_user':new_user})
 	else:
-		user_form = user_edit_form(instance = request.user)
-		contact_form = contact_edit_form(instance = request.user)
-
-	return render(request,'profile.html',{'person': person, 'phone_no':phone_no})
-
-@login_required
-def password_change_done_view(request):
-	person = Person.objects.get(user = request.user)
-	return render(request,'password_change_done.html', {'person': person})
-
-@login_required
-def home_view(request):
-	user = request.user
-	person = Person.objects.get(user = user)
-#	print(person.role)
-	return render(request,'home.html',{'user':user,'person':person})      #->Work this out.
+		user_form = user_registration_form()
+	return render(request, 'register.html', {'user_form':user_form})
 
 
-def permissible_emissions_view(request):
-	emissions = Emission_parameters.objects.all()
-	if isinstance(request.user, AnonymousUser):
-		person = Person()
-	else:
-		person = Person.objects.get(user = request.user)
-	return render(request, 'permissible_emissions.html', {'emissions':emissions, 'person':person})
-
+#============== Viewers views ================#
 
 @login_required
 def lodge_complaint_view(request):
+	try:
+		if Person.objects.get(user=request.user).role != "viewer":
+			return render(request, "401.html", status=401)
+	except:
+		return render(request, "401.html", status=401)
 	if request.method == 'POST':
 		user_form = lodge_complaint_form(instance = request.user, data = request.POST)
 
@@ -171,11 +198,36 @@ def lodge_complaint_view(request):
 
 			obj = Complaints(person = person, complaint = complaint, rules_violated = rules_violated)
 			obj.save()
-			return render(request,'complaint_lodged.html',{'user':user, 'complaint':obj})
+			return HttpResponseRedirect(reverse("complaint_lodged", args=[obj.id]))
 	else:
 		user_form = lodge_complaint_form(instance = request.user)
 
 	return render(request,'lodge_complaint.html', {'user_form':user_form})
+
+@login_required
+def complaint_lodged_view(request, id):
+	try:
+		if Person.objects.get(user=request.user).role != "viewer":
+			return render(request, "401.html", status=401)
+	except:
+		return render(request, "401.html", status=401)
+	complaint = Complaints.objects.get(id=id)
+	return render(request,'complaint_lodged.html',{'complaint':complaint})
+
+@login_required
+def track_complaint_view(request):
+	try:
+		if Person.objects.get(user=request.user).role != "viewer":
+			return render(request, "401.html", status=401)
+	except:
+		return render(request, "401.html", status=401)
+	user = request.user
+	person = Person.objects.get(user = user)
+	complaints = Complaints.objects.filter(person = person).order_by('-last_update')
+	return render(request,'track_complaint.html',{'complaints':complaints})
+
+
+#============= Supervisor's Views ==============#
 
 @login_required
 def select_session_page(request):
@@ -211,6 +263,7 @@ def enter_emissions_page(request, session_id):
 			value = cleaned_data['value']
 			obj = Company_emissions(session=Session.objects.get(id=session_id), substance=substance, value=value)
 			obj.save()
+			return HttpResponseRedirect(reverse('enter_emissions', args=[session_id]))
 	try:
 		filled = Company_emissions.objects.filter(session=Session.objects.get(id=session_id))
 	except:
@@ -230,23 +283,42 @@ def enter_emissions_page(request, session_id):
 		"session_id": [session_id],
 		"attributes_left": attributes_left,
 		"attributes_filled": filled_attributes,
+		"person": Person.objects.get(user=request.user)
 	}
 	return render(request, "enter_emissions.html", context)
 
-@login_required
-def track_complaint_view(request):
-	user = request.user
-	person = Person.objects.get(user = user)
-	complaints = Complaints.objects.filter(person = person).order_by('-last_update')
-	return render(request,'track_complaint.html',{'complaints':complaints})
+
+#============== Auditor's Views ==============#
+#----- Audit complaints
+#----- Audit emissions
+#----- Audit surveys
 
 @login_required
 def audit_complaints_view(request):
+	try:
+		if Person.objects.get(user=request.user).role != "Auditor":
+			return render(request, "401.html", status=401)
+	except:
+		return render(request, "401.html", status=401)
 	complaints = Complaints.objects.all().order_by('-last_update')
-	return render(request,'audit_complaints.html',{'complaints':complaints})
+	#res, rel, irr = int()
+	res, rel, irr = (0,0,0)
+	for complaint in complaints:
+		if complaint.status == "Resolved":
+			res += 1
+		elif complaint.status == "Relevant":
+			rel += 1
+		else:
+			irr += 1
+	return render(request,'audit_complaints.html',{'complaints':complaints, 'res':res, 'rel':rel, 'irr':irr})
 
 @login_required
 def complaint_feedback_view(request, complaint_id):
+	try:
+		if Person.objects.get(user=request.user).role != "Auditor":
+			return render(request, "401.html", status=401)
+	except:
+		return render(request, "401.html", status=401)
 	complaint = Complaints.objects.get(id = complaint_id)
 	if request.method == 'POST':
 		complaint.feedback = request.POST['feedback']
@@ -263,27 +335,103 @@ def complaint_feedback_view(request, complaint_id):
 		send_mail( subject, message, email_from, recipient_list )
 
 		return redirect('audit_complaints')
-		#add email part
 	return render(request,'complaint_feedback.html',{'complaint':complaint})
 
 @login_required
+def audit_emissions_view(request):
+	try:
+		if Person.objects.get(user=request.user).role != "Auditor":
+			return render(request, "401.html", status=401)
+	except:
+		return render(request, "401.html", status=401)
+	company_emissions = Company_emissions.objects.all().order_by('-session__date', 'substance__substance_name')
+	session_sub = dict()
+	session_dt = []
+	for company_emission in company_emissions:
+		if company_emission.session.id not in session_sub:
+			session_sub.update({ company_emission.session.id: [(company_emission.substance.substance_name, company_emission.value,
+			                                            Emission_parameters.objects.get(substance_name = company_emission.substance.substance_name).min_permissible_limit,
+														Emission_parameters.objects.get(substance_name = company_emission.substance.substance_name).max_permissible_limit,
+														company_emission.session.date.strftime("%d %b, %Y"))]})
+			session_dt.append(company_emission.session.date.strftime("%d %b, %Y"))
+		else:
+			session_sub[company_emission.session.id].append((company_emission.substance.substance_name, company_emission.value,
+															Emission_parameters.objects.get(substance_name = company_emission.substance.substance_name).min_permissible_limit,
+															Emission_parameters.objects.get(substance_name = company_emission.substance.substance_name).max_permissible_limit))
+	return render(request,'audit_emissions.html',{'session_sub':session_sub, 'session_dt': session_dt})
+
+@login_required
+def update_emissions_view(request, session_id):
+	try:
+		if Person.objects.get(user=request.user).role != "Auditor":
+			return render(request, "401.html", status=401)
+	except:
+		return render(request, "401.html", status=401)
+	session = Session.objects.get(id=session_id)
+	company_emissions = Company_emissions.objects.filter(session=session)
+	if request.method == 'POST':
+		user_form = enter_emissions_form(instance=request.user, data=request.POST)
+		if user_form.is_valid():
+			cleaned_data = user_form.cleaned_data
+			substance = cleaned_data['substance']
+			value = cleaned_data['value']
+			obj = Company_emissions.objects.filter(session=Session.objects.get(id=session_id)).filter(substance=substance)
+			obj.update(value=value)
+			return HttpResponseRedirect(reverse('update_emissions', args=[session_id]))
+	try:
+		filled = Company_emissions.objects.filter(session=Session.objects.get(id=session_id))
+	except:
+		return render(request, "404.html", status=404)
+	filled_attributes=list()
+	attributes_filled_substances = list()
+	for row in filled:
+		filled_attributes.append(row)
+		attributes_filled_substances.append(row.substance)
+	lefts = Emission_parameters.objects.all()
+	attributes_left = list()
+	for attr in lefts:
+		attributes_left.append(attr)
+	context = {
+		"session_id": [session_id],
+		"attributes_left": attributes_left,
+		"attributes_filled": filled_attributes,
+		"person": Person.objects.get(user=request.user)
+	}
+	return render(request, "enter_emissions.html", context)
+
+@login_required
 def audit_surveys_view(request):
+	try:
+		if Person.objects.get(user=request.user).role != "Auditor":
+			return render(request, "401.html", status=401)
+	except:
+		return render(request, "401.html", status=401)
 	surveys = Survey_metadata.objects.all().order_by('-date')
 	return render(request,'audit_surveys.html',{'surveys':surveys})
 
 @login_required
 def survey_response_view(request, survey_id, response_id = 0):
+	try:
+		if Person.objects.get(user=request.user).role != "Auditor":
+			return render(request, "401.html", status=401)
+	except:
+		return render(request, "401.html", status=401)
 	survey = Survey_metadata.objects.get(id = survey_id)
 	responses = Survey_data.objects.filter(survey_id = survey)
 	if request.method == 'POST':
-		print(request.POST)
 		response = Survey_data.objects.get(id = response_id)
+		flag = False
+		if response.status == "Irrelevant":
+			flag = True
 		response.status = request.POST['status'] #add button that changes value attribute of status input
 		if response.status == "Not addressed":
 			pass
 		elif response.status == "Addressed":
-			survey.num_issues -= 1
-			survey.resolved_issues += 1
+			if flag:
+				survey.resolved_issues += 1
+			else:
+				survey.num_issues -= 1
+				survey.resolved_issues += 1
 		elif response.status == "Irrelevant":
 			survey.num_issues -= 1
 			survey.relevant_issues -= 1
@@ -293,54 +441,50 @@ def survey_response_view(request, survey_id, response_id = 0):
 		response.save()
 		survey.save()
 
+		return HttpResponseRedirect(reverse("survey_response", args=[survey_id, response_id]))
+
 	return render(request,'survey_response.html',{'responses':responses, 'survey_id':survey_id})
 
-@login_required
-def audit_emissions_view(request):
-	company_emissions = Company_emissions.objects.all().order_by('-session__date', 'substance__substance_name')
-	session_sub = dict()
-	session_dt = dict()
-	for company_emission in company_emissions:
-		print(company_emission.substance.substance_name)
-		if session_sub[company_emission.session.id] is None:
-			session_sub[company_emission.session.id] = [(company_emission.substance.substance_name, company_emission.value,
-			                                            Emission_parameters.objects.get(substance_name = company_emission.substance.substance_name).min_permissible_limit,
-														Emission_parameters.objects.get(substance_name = company_emission.substance.substance_name).max_permissible_limit)]
-			session_dt[company_emission.session.id] = [company_emission.session.date]
-		else:
-			session_sub[company_emission.session.id].append((company_emission.substance, company_emission.value,
-															Emission_parameters.objects.get(substance_name = company_emission.substance.substance_name).min_permissible_limit,
-															Emission_parameters.objects.get(substance_name = company_emission.substance.substance_name).max_permissible_limit))
-	return render(request,'audit_emissions.html',{'session_sub':session_sub, 'session_dt': session_dt})
+
+#=========== Surveyor's Views ===========#
 
 @login_required
 def surveys_view(request):
+	try:
+		if Person.objects.get(user=request.user).role != "Surveyor":
+			return render(request, "401.html", status=401)
+	except:
+		return render(request, "401.html", status=401)
 	surveys = Survey_metadata.objects.all().order_by('-date')
 	return render(request, 'surveys.html', {'surveys':surveys})
 
 @login_required
 def new_survey_view(request):
-	#print(request.body)
+	try:
+		if Person.objects.get(user=request.user).role != "Surveyor":
+			return render(request, "401.html", status=401)
+	except:
+		return render(request, "401.html", status=401)
 	pers = Person.objects.get(user = request.user)
 	if request.method == 'POST':
-		#print(request.)
-		user = User.objects.get(email = request.POST['auditor'])
-		person = Person.objects.get(user = user)
-		if person.role != "Auditor":
-			print("Not auditor")
-			return render(request,'new_survey.html', {'user_form':user_form, 'pers':pers})
-		data = {
-		'auditor': person,
-		'date': request.POST['date'],
-		'population': request.POST['population']
-		}
-		print(data['auditor'])
-		user_form = new_survey_form(instance = request.user, data = data)
-		print(user_form.errors)
-		if user_form.is_valid():
-			obj = Survey_metadata(auditor = person, date = data['date'], population = data['population'])
-			obj.save()
-			return render(request,'survey_created.html',{'obj':obj, 'pers':pers})
+		try:
+			user = User.objects.get(email = request.POST['auditor'])
+			person = Person.objects.get(user = user)
+			if person.role != "Auditor":
+				print("Not auditor")
+				return render(request,'new_survey.html', {'user_form':user_form, 'pers':pers})
+			data = {
+			'auditor': person,
+			'date': request.POST['date'],
+			'population': request.POST['population']
+			}
+			user_form = new_survey_form(instance = request.user, data = data)
+			if user_form.is_valid():
+				obj = Survey_metadata(auditor = person, date = data['date'], population = data['population'])
+				obj.save()
+				return render(request,'survey_created.html',{'obj':obj, 'pers':pers})
+		except:
+			user_form = new_survey_form(instance = request.user)
 	else:
 		user_form = new_survey_form(instance = request.user)
 
@@ -348,12 +492,16 @@ def new_survey_view(request):
 
 @login_required
 def survey_form_view(request, survey_id):
+	try:
+		if Person.objects.get(user=request.user).role != "Surveyor":
+			return render(request, "401.html", status=401)
+	except:
+		return render(request, "401.html", status=401)
 	if request.method == 'POST':
 		user_form = survey_form_form(instance = request.user, data = request.POST)
 		print(user_form.errors)
 		if user_form.is_valid():
 			person = Person.objects.get(user = request.user)
-			print('1')
 			cd = user_form.cleaned_data
 			pers = cd['person']
 			feedback = cd['feedback']
@@ -366,21 +514,9 @@ def survey_form_view(request, survey_id):
 
 			obj = Survey_data(surveyor = person, person = pers, feedback = feedback, survey_id = survey)
 			obj.save()
-			return render(request,'survey_complete.html',{})
+			return render(request,'survey_complete.html',{'survey_id':survey_id})
 
 	else:
 		user_form = survey_form_form(instance = request.user)
 
 	return render(request,'survey_form.html', {'user_form':user_form, 'survey_id':survey_id})
-
-"""
-@login_required
-def survey_data_view(request):
-	user = request.user
-	surveyor = Person.objects.get(user = user)
-	try:
-		serveys = Servey_data.objects.filter(survey_id = surveyor, draft = True).order_by('-pub_date')
-	except:
-		userDrafts = None
-	return render(request,'blog/userDrafts.html',{'userDrafts':userDrafts})
-"""

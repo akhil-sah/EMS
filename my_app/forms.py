@@ -29,7 +29,7 @@ class user_edit_form(forms.ModelForm):
 class contact_edit_form(forms.ModelForm):
 	class Meta:
 		model = Phone_no
-		fields = ('phone_no',)
+		fields = ('person', 'phone_no')
 
 class lodge_complaint_form(forms.ModelForm):
 	class Meta:

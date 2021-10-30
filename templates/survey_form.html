@@ -22,7 +22,7 @@
                     	<a class="nav-link" href="/permissible_emissions">MPE</a>
                     </li>
                     <li class="nav-item active">
-                    	<a class="nav-link" href="#">Surveys</a>
+                    	<a class="nav-link" href="/surveys">Surveys</a>
                     </li>
 		      		<li class="nav-item dropdown">
 		        		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">My Profile
@@ -49,7 +49,7 @@
                 {% csrf_token %}
                     <input  id = "survey_id" name = "survey_id" type = "hidden" value="{{survey_id}}" />
                     <div class = "form-group row">
-                        <label for="person" class = "col-md-2 col-form-label" title="Leave empty for anonymous response">Name</label>
+                        <label for="person" class = "col-md-2 col-form-label" title="Write anonymous for anonymous response">Name</label>
                         <div class = "col-md-10">
                             <input class = "form-control" id = "person" name = "person"/>
                         </div>

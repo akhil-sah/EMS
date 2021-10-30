@@ -1,19 +1,24 @@
 {% extends 'base.html' %}
-{% load static %}
+
 {% block content_2 %}
-	<div class='postResetBlock'>
-		<div class=content>
-			<header>
-				<h1 class='title'>EMS</h1>
-				<blockquote class='tagline'>Environment Management System</blockquote>
-			</header>
-			{% if new_user.is_authenticated %}
-			<div class='message'>
-				<h2>Welcome {{new_user.username}}</h2>
-				<p>Your account has been created. You can <a href="{% url 'login' %}">LogIn</a> now.</p>
-				<img src="{% static 'images/doneIcon.jpeg' %}" alt = '' id='doneIcon'>
-			</div>
-			{% endif %}
-		</div>
-	</div>
+<div class = "container" style="min-height: 79vh;">
+	<div class="row row-content">
+		{% if new_user.is_authenticated %}
+        <div class="col-12">
+           <h2>Registration successfull</h2>
+        </div>
+        <div class="col-12 col-md-9">
+            <h3>Welcome {{new_user.username}}</h3>
+            <p>Your account has been created. You can <a href="{% url 'login' %}">Log in</a> now.</p>		
+        </div>
+        {% else %}
+        <div class="col-12 col-md-9">
+            <h3>Registration error</h3>
+            <p>Some error occured while registering. Please try <a href="{% url 'login' %}">registering</a> again.</p>		
+        </div>
+        {% endif %}
+        <div class="col-12 col-md">
+        </div>
+   </div>
+</div>
 {% endblock %}

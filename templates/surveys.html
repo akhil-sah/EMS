@@ -39,26 +39,20 @@
 {% endblock %}
 
 {% block content_2 %} 
-    <div class ="container">
+    <div class ="container" style="min-height:79vh;">
         <div class = "row row-content">
-            <h1>Surveys</h1>
-            <div class = "col-12 col-sm-12">
-                <p>about surveys (what is covered in servey and all)</p>
-            </div>
-        </div>
-        <div class = "row row-content">
-            <div class = "col-12 col-sm-9">
+            <div class = "col-12 col-sm-10">
                 <h2>Survey list</h2>
-				{% for survey in surveys %}
-					<ul class="list-group list-group-flush">
-						<li class="list-group-item">
-							<a style = "text-decoration: none;" href = "{% url 'survey_form' survey_id=survey.id %}">{{survey.id}}&nbsp;&nbsp;<small>{{survey.date}}</small></a>
-						</li>
-					</ul>
-				{% endfor %}
             </div>
             <div>
-            	<a class="btn btn-primary" href="/new_survey" role="button">Create new survey &nbsp;<span class = "fa fa-plus"></span></a> 
+                <a class="btn btn-primary" href="/new_survey" role="button">Create new survey &nbsp;<span class = "fa fa-plus"></span></a> 
+            </div>
+            <div class = "col-12 col-sm-10">
+				{% for survey in surveys %}
+                    <div class="list-group">
+                        <a href="{% url 'survey_form' survey_id=survey.id %}" class="list-group-item list-group-item-action">Survey {{survey.id}}:&nbsp;&nbsp;&nbsp;&nbsp;<small>{{survey.date}}</small></a>
+                    </div>
+				{% endfor %}
             </div>
         </div>
     </div>

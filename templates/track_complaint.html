@@ -22,9 +22,6 @@
                     	<a class="nav-link" href="/permissible_emissions">MPE</a>
                     </li>
                     <li class="nav-item">
-                    	<a class="nav-link" href="#">Articles</a>
-                    </li>
-                    <li class="nav-item">
                     	<a class="nav-link" href="/home">About</a>
                     </li>
 	      			<li class="nav-item dropdown active">
@@ -60,7 +57,7 @@
         		<p>We couldn't find any complaints lodged by you</p>
         	</div>
         {% else %}       
-		    <div class="col-12 col-md-9">
+		    <div class="col-12">
 	    		<div class = "table-responsive">
                     <table class = "table table-striped">
                        <thead class = "thead-dark">
@@ -74,13 +71,19 @@
                        </thead>
                        <tbody>
 							{% for complaint in complaints %}                           
-							<tr>
-                               <td>{{complaint.id}}</td>
-                               <td>{{complaint.complaint}}</td>
-                               <td>{{complaint.rules_violated}}</td>
-                               <td>{{complaint.status}}</td>
-                               <td>{{complaint.last_update}}</td>
-                           </tr>
+    							{% if complaint.status == "Resolved" %}
+                                    <tr style="background-color:#bff5af; color: #000000;">
+                                {% elif complaint.status == "Relevant" %}
+                                    <tr style = "background-color:#fbbaa7; color: #000000;">
+                                {% else %}
+                                    <tr style = "background-color: #d5d3d3; color: #000000;"> 
+                                {% endif %}
+                                       <td>{{complaint.id}}</td>
+                                       <td>{{complaint.complaint}}</td>
+                                       <td>{{complaint.rules_violated}}</td>
+                                       <td>{{complaint.status}}</td>
+                                       <td>{{complaint.last_update}}</td>
+                                   </tr>
 						{% endfor %}
                        </tbody>
                     </table>
