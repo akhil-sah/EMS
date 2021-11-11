@@ -241,7 +241,8 @@ def select_session_page(request):
 		if user_form.is_valid():
 			cleaned_data = user_form.cleaned_data
 			session=cleaned_data['session']
-			return enter_emissions_page(request, session.id)
+			print(type(session.id))
+			return enter_emissions_page(request=request, session_id=session.id)
 	try:
 		context = {"sessions": Session.objects.filter(supervisor=Person.objects.get(user=request.user))}
 	except:
@@ -261,8 +262,16 @@ def enter_emissions_page(request, session_id):
 			cleaned_data = user_form.cleaned_data
 			substance = cleaned_data['substance']
 			value = cleaned_data['value']
-			obj = Company_emissions(session=Session.objects.get(id=session_id), substance=substance, value=value)
-			obj.save()
+			try:
+				obj = Company_emissions.objects.filter(session=Session.objects.get(id=session_id)).filter(substance=substance)
+				if obj:
+					obj.update(value=value)
+				else:
+					obj = Company_emissions(session=Session.objects.get(id=session_id), substance=substance, value=value)
+					obj.save()
+			except:
+				obj = Company_emissions(session=Session.objects.get(id=session_id), substance=substance, value=value)
+				obj.save()
 			return HttpResponseRedirect(reverse('enter_emissions', args=[session_id]))
 	try:
 		filled = Company_emissions.objects.filter(session=Session.objects.get(id=session_id))
@@ -276,9 +285,10 @@ def enter_emissions_page(request, session_id):
 	lefts = Emission_parameters.objects.all()
 	attributes_left = list()
 	for attr in lefts:
-		if attr in attributes_filled_substances:
-			continue
-		attributes_left.append(attr)
+		attributes_left.append(attr)		
+		#if attr in attributes_filled_substances:
+		#	continue
+		
 	context = {
 		"session_id": [session_id],
 		"attributes_left": attributes_left,
@@ -461,7 +471,7 @@ def surveys_view(request):
 @login_required
 def new_survey_view(request):
 	try:
-		if Person.objects.get(user=request.user).role != "Surveyor":
+		if Person.objects.get(user=request.user).role != "Surveyor" and Person.objects.get(user=request.user).role != "Auditor":
 			return render(request, "401.html", status=401)
 	except:
 		return render(request, "401.html", status=401)

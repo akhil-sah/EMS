@@ -38,7 +38,7 @@ urlpatterns = [
     path('select_session/', views.select_session_page, name = 'select_session'),
     path('enter_emissions/<int:session_id>', views.enter_emissions_page, name = 'enter_emissions'),
 
-    # Surveyer's urls
+    # Surveyor's urls
     path('surveys/', views.surveys_view, name = 'surveys'),
     path('new_survey/', views.new_survey_view, name = 'new_survey'),
     path('surveys/<int:survey_id>/survey_form/', views.survey_form_view, name = 'survey_form'),

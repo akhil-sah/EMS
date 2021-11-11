@@ -58,7 +58,7 @@
        </div> 
         <div class="col-12">
             {% for sess in session_id %}
-            <form action="{% url 'update_emissions' sess %}" method="POST">
+            <form action="{% url 'enter_emissions' sess %}" method="POST">
             {% endfor %}
                 {% csrf_token %}
                 <div class="form-group row">
