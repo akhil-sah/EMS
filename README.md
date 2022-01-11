@@ -1,6 +1,6 @@
 # Environment Management System
 
-[![GitHub Stars](https://img.shields.io/github/stars/akhil-sah/EMS.svg)](https://github.com/akhi-sah/EMS/stargazers) [![GitHub Issues](https://img.shields.io/github/issues/akhil-sah/EMS.svg)](https://github.com/akhil-sah/EMS/issues)
+[![GitHub Stars](https://img.shields.io/github/stars/akhil-sah/EMS.svg)](https://github.com/akhil-sah/EMS/stargazers) [![GitHub Issues](https://img.shields.io/github/issues/akhil-sah/EMS.svg)](https://github.com/akhil-sah/EMS/issues)
 
 An Environmental Management System (EMS) is a framework that helps an organization achieve its environmental goals through consistent review, evaluation, and improvement of its environmental performance.
 
