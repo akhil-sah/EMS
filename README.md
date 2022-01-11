@@ -16,8 +16,8 @@ An Environmental Management System (EMS) is a framework that helps an organizati
   - [Audit Emissions Page](#audit-emissions-page)
   - [Survey Page](#survey-page)
 - [Features](#features)
-- [Technologies](#technologies)
-- [Installation](#installation)
+- [Frameworks and Libraries](#frameworks-and-libraries)
+- [Setup](#setup)
 
 ## General Info
 
@@ -29,41 +29,41 @@ Screen captures of some of the web pages of the website.
 
 ### Home Page
 
-![Website Preview](./ss/Capture1.PNG)
+![Website Preview](./ss/home.png)
 
 ### Login Page
 
-![Website Preview](./ss/.png)
+![Website Preview](./ss/login.png)
 
 ### Register Page
 
-![Website Preview](./ss/.png)
+![Website Preview](./ss/register.png)
 
 ### User Profile Page
 
-![Website Preview](./ss/.png)
+![Website Preview](./ss/profile.png)
 
 ### Maximum Permissible Emission Page
 
 This page displays the values of maximum permissible limits for various pollutants. The values should be as per the government’s guidelines (the picture shows just some sample values).
 
-![Website Preview](./ss/.png)
+![Website Preview](./ss/mpe.png)
 
 ### Audit Emissions Page
 
 This page displays a collapsible list of all the sessions for entering company’s emissions. On clicking a session the details for that session is shown and a table with emission details is displayed. The pollutants within permissible limits are shown in green color while those out of range are marked with red color. 
 
-![Website Preview](./ss/.png)
+![Website Preview](./ss/audit_emis1.png)
 
 The auditor can update the values (after directing the company’s relevant authorities to take suitable actions to check the pollutants concentration) of emitted pollutants that are out of range.
 
-![Website Preview](./ss/.png)
+![Website Preview](./ss/audit_emis2.png)
 
 ### Survey Page
 
 This page displays a list of surveys conducted by the company. Each content of list directs the surveyor to a page to accept response of a survey participant of that survey.
 
-![Website Preview](./ss/.png)
+![Website Preview](./ss/survey_list.png)
 
 ## Features
 
