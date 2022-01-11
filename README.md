@@ -67,13 +67,7 @@ This page displays a list of surveys conducted by the company. Each content of l
 
 ## Features
 
-- Code collaboration at real time
-- Support for multiple programming language syntax
-- Support for multiple editor background themes
-- Realtime communication via audio and video chat
-- Upload/Download source code
-- Text reader for reading content of editor
-- Supports multiple users (tested upto 10 users)
+
 
 ## Frameworks and libraries
 
