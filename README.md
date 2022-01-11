@@ -98,7 +98,7 @@ pip install Django==3.2.7
 ```
 - Install cripy-form module
 ```sh
-pip install crispy==1.13.0
+pip install django-crispy-forms==1.13.0
 ```
 - The website also sends mail to it's users and to enable that feature an email host should be provided. For that navigate to EnvManSys directory and in the settings.py file add the email account and it's password as shown below
 ```sh
