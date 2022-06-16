@@ -81,7 +81,7 @@ This page displays a list of surveys conducted by the company. Each content of l
 
 ## Setup
 
-(The various commands are for windows OS)
+(The commands are for windows OS)
 - The system should have [python](https://www.python.org/downloads/) installed on it as the website was built using django which is python web framework.
 - Create virtual environment in python using the command given below (recommended to avoid future compatibility issue due to different versions)
   - To install virtualenv package
