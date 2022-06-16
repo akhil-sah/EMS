@@ -67,6 +67,10 @@ This page displays a list of surveys conducted by the company. Each content of l
 
 ## Features
 
+- User friendly interface
+- Well structured complaint list showing status of each complaint.
+- Automatic email generation after auditing of complaints.
+- Support for adding additional pollutants/effluents to the list of existing.
 
 
 ## Frameworks and libraries
