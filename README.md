@@ -4,7 +4,7 @@
 
 An Environmental Management System (EMS) is a framework that helps an organization achieve its environmental goals through consistent review, evaluation, and improvement of its environmental performance.
 
-## Table of contents
+## Contents
 
 - [General Info](#general-info)
 - [Screen Captures](#screen-captures)
